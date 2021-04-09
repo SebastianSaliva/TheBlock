@@ -16,18 +16,37 @@ void ofApp::draw(){
     /* The update method is called muliple times per second
     It's in charge of drawing all figures and text on screen */
     ofNoFill();
-    if(mode == '1'){
-        drawMode1(ofGetWidth()/2, ofGetHeight()/2, 4);
-    }else if(mode == '2'){
-        drawMode2(200, 10, ofGetWidth()/2, ofGetHeight()-50, 30);
-    }else if(mode == '3') {
-        drawMode3(ofGetWidth() / 3, 10, ofGetHeight() / 2, 10);
+    ofSetColor(255);
+    ofDrawBitmapString("Depth: "+ to_string(depth+4), ofGetWidth()/2 -20 , ofGetHeight()-10);
 
+
+    if (mode1IsActive){
+        drawMode1(ofGetWidth()/2, ofGetHeight()/2,  4 + depth);
     }
+    if (mode2IsActive){
+        drawMode2(200, 4 + depth, ofGetWidth()/2, ofGetHeight()-50, 30);
+    }
+    if(mode3IsActive){
+        drawMode3(ofGetWidth() / 2 - ofGetHeight() / 4, 10, ofGetHeight() / 2, 4 + depth);
+    }
+    // if(mode4IsActive)
+    //     drawMode1(ofGetWidth()/2, ofGetHeight()/2, 4);
+    // }
+    
 }
 void ofApp::drawMode1(int x, int y, int n){
-    if(n!=0){
-        ofDrawCircle(x, y, 100);
+    // ofSetColor(pow(n,3) + 100, abs(sin(n*90))*255, pow(n, 2) * 20); //ehhh
+    
+    //ofSetColor(n * 30 + 100, n%2 * 155 , pow(n, 2) * 2 + 100);
+
+    //ofSetColor(pow(n, 2)* 5, x*20+ 100, n%2 * 255);
+
+    if ((n+2)%3 == 0) {ofSetColor(255, 0, 0);}
+    else if ((n+1)%3 == 0) {ofSetColor(0, 255, 0);}
+    else {ofSetColor(0, 0, 255);}
+
+    if(n>0){
+        ofDrawCircle(x, y, n*10 );
         drawMode1(x+100, y, n-1);
         drawMode1(x-100, y, n-1);
         drawMode1(x, y+100, n-1);
@@ -35,7 +54,11 @@ void ofApp::drawMode1(int x, int y, int n){
     }
 }
 void ofApp::drawMode2(int length, int n, int x, int y, int d){
-    if(n != 0){
+    if ((n+2)%3 == 0) {ofSetColor(255, 0, 0);}
+    else if ((n+1)%3 == 0) {ofSetColor(0, 255, 0);}
+    else {ofSetColor(0, 0, 255);}
+
+    if(n > 0){
         int middleY = y-length;
         int leftBranchX = x -length*cos(PI/180*d);
         int leftBranchY = middleY -length*sin(PI/180*d);
@@ -53,7 +76,12 @@ void ofApp::drawMode2(int length, int n, int x, int y, int d){
 }
 
 void ofApp::drawMode3(float x, float y, float size, int n){
-    if(n == 0) {
+    
+    if ((n+2)%3 == 0) {ofSetColor(255, 0, 0);}
+    else if ((n+1)%3 == 0) {ofSetColor(0, 255, 0);}
+    else {ofSetColor(0, 0, 255);}
+
+    if(n <= 0) {
         return;
     }
 
@@ -73,17 +101,27 @@ void ofApp::keyPressed(int key){
     // This method is called automatically when any key is pressed
     switch(key){
         case '1':
-            mode = '1';
+            mode1IsActive = !mode1IsActive;
             break;
         case '2':
-            mode = '2';
+            mode2IsActive = !mode2IsActive;
             break;
         case '3':
-            mode = '3';
+            mode3IsActive = !mode3IsActive;
             break;
         case '4':
-            mode = '4';
+            mode4IsActive = !mode4IsActive;
             break;
+        case '-':
+            if (depth > -4){
+            depth -= 1;}
+            break;
+
+        case '=':
+            depth += 1;
+            break;
+
+            
     }
 }
 
