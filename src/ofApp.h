@@ -3,15 +3,18 @@
 
 #include "ofMain.h"
 
+#include "FractalMode.h"
+#include "DrawMode1.h"
+#include "DrawMode2.h"
+#include "DrawMode3.h"
+
 class ofApp : public ofBaseApp{
 	public:
 		void setup();
 		void update();
 		void draw();
+		vector<FractalMode*> ModeVector{new DrawMode1(), new DrawMode2(), new DrawMode3()};
 
-		void drawMode1(int x, int y, int n);
-		void drawMode2(int length, int n, int x, int y, int d);
-		void drawMode3(float x, float y, float size, int n);
 		void keyPressed(int key);
 		void keyReleased(int key);
 		void mouseMoved(int x, int y);
@@ -24,10 +27,5 @@ class ofApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 	private:
-		char mode = '1';
-		bool mode1IsActive = false;
-		bool mode2IsActive = false;
-		bool mode3IsActive = false;
-		bool mode4IsActive = false;
 		int depth = 0;
 };
