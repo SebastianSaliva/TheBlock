@@ -8,9 +8,10 @@ class DrawMode1: public FractalMode {
     
     DrawMode1():FractalMode(){}
     
-    string getName() {return "mode 1";}
+    string getName() {return "Circles";}
 
     void draw(){}
+    
     void draw(int x, int y, int n) {
 
         if ((n+2)%3 == 0) {ofSetColor(255, 0, 0);}

@@ -8,13 +8,13 @@ class DrawMode3: public FractalMode {
     
     DrawMode3():FractalMode(){}
 
-    string getName() {return "mode 3";}
+    string getName() {return "Sierpiński triangle";}
     
     void draw(){}
     
     void draw(float x, float y, float size, int n) {
     
-        if ((n+2)%3 == 0) {ofSetColor(255, 0, 0);}
+        if ((n+2)%3 == 0) {ofSetColor(0, 255, 0);}
         else if ((n+1)%3 == 0) {ofSetColor(0, 255, 0);}
         else {ofSetColor(0, 0, 255);}
 

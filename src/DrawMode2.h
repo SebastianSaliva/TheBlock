@@ -8,7 +8,7 @@ class DrawMode2: public FractalMode {
     
     DrawMode2():FractalMode(){}
 
-    string getName() {return "mode 2";}
+    string getName() {return "Trees";}
     
     void draw(){}
 
@@ -28,8 +28,6 @@ class DrawMode2: public FractalMode {
             ofDrawLine(x, y, x,y-length);
             ofDrawLine(x, y-length, rightBranchX, rightBranchY);
             ofDrawLine(x,y-length, leftBranchX, leftBranchY);
-
- 
 
             this->draw(length/2, n-1,rightBranchX,rightBranchY, 30);
             this->draw(length/2,n-1,leftBranchX,leftBranchY, 30);

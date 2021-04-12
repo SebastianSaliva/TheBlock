@@ -7,13 +7,18 @@
 #include "DrawMode1.h"
 #include "DrawMode2.h"
 #include "DrawMode3.h"
+#include "KochSnowFlake.h"
+#include "CustomMode1.h"
+#include "CustomMode2.h"
+
+
 
 class ofApp : public ofBaseApp{
 	public:
 		void setup();
 		void update();
 		void draw();
-		vector<FractalMode*> ModeVector{new DrawMode1(), new DrawMode2(), new DrawMode3()};
+		vector<FractalMode*> ModeVector{new DrawMode1(), new DrawMode2(), new DrawMode3(), new KochSnowFlake(), new CustomMode1(), new CustomMode2()};
 
 		void keyPressed(int key);
 		void keyReleased(int key);
@@ -28,4 +33,7 @@ class ofApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
 	private:
 		int depth = 0;
+		bool animationIsActive = false;
+		int framesSinceAnimationWasActive = 0;
+		int animSpeed = 1;
 };
