@@ -10,6 +10,9 @@
 #include "KochSnowFlake.h"
 #include "CustomMode1.h"
 #include "CustomMode2.h"
+#include "CustomMode3.h"
+#include "CustomMode4.h"
+#include "CustomMode5.h"
 
 
 
@@ -18,7 +21,8 @@ class ofApp : public ofBaseApp{
 		void setup();
 		void update();
 		void draw();
-		vector<FractalMode*> ModeVector{new DrawMode1(), new DrawMode2(), new DrawMode3(), new KochSnowFlake(), new CustomMode1(), new CustomMode2()};
+		void drawOmega();
+		vector<FractalMode*> ModeVector{new DrawMode1(), new DrawMode2(), new DrawMode3(), new KochSnowFlake(), new CustomMode1(), new CustomMode2(),new CustomMode3(),new CustomMode4(),new CustomMode5()};
 
 		void keyPressed(int key);
 		void keyReleased(int key);
@@ -31,9 +35,20 @@ class ofApp : public ofBaseApp{
 		void windowResized(int w, int h);
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
+
 	private:
-		int depth = 0;
+		int depth = 5;
 		bool animationIsActive = false;
 		int framesSinceAnimationWasActive = 0;
 		int animSpeed = 1;
+
+		bool omegaAnimationIsPlaying = false;
+		int omegaFrames = 0;
+		int frameCount= 0;
+		ofSoundPlayer song;
+
+
+
+
+
 };

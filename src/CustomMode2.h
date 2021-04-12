@@ -6,7 +6,7 @@
 class CustomMode2: public FractalMode {
 
     public:
-    
+
     CustomMode2():FractalMode(){}
 
     string getName() {return "Custom Mode 2";}
@@ -28,31 +28,29 @@ class CustomMode2: public FractalMode {
         
         ofFill();
         
-        ofSetColor(colorLevel-70);
+        ofSetColor(colorLevel-70, colorLevel-100, colorLevel-140);
         ofDrawTriangle(a, b, c);
         ofDrawTriangle(a, c, d);
 
-        ofSetColor(colorLevel-120);
+        ofSetColor(colorLevel-120, colorLevel-150, colorLevel-180);
         ofDrawTriangle(a, d, e);
         ofDrawTriangle(a, e, f);
 
-        ofSetColor(colorLevel);
+        ofSetColor(colorLevel, colorLevel-90, colorLevel-100);
         ofDrawTriangle(a, f, g);
         ofDrawTriangle(a, g, b);
-
+        
 
         draw(c.x, c.y, l/2, n-1,colorLevel-10);
         draw(e.x, e.y, l/2, n-1,colorLevel-10);
         draw(g.x, g.y, l/2, n-1,colorLevel-10);
-
+        
     }
 
-
-
-    
 
     void draw(float x, float y, float l, int n) {
 
         draw(x, y, l, n, 255);
     }
+
 };
