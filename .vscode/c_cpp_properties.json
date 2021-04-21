@@ -4,11 +4,14 @@
             "name": "Win32",
             "includePath": [
                 "${workspaceFolder}/**",
-                "${workspaceFolder}/../../../libs/**",
+                "${workspaceFolder}/../../../addons/**",
+                "${workspaceFolder}/../../../libs/**",                
+
                 "${workspaceFolder}/../../../libs/openFrameworks/utils/*",
                 "C:\\msys64\\mingw32\\include\\**",
                 "C:\\msys64\\mingw32\\i686-w64-mingw32",
                 "/usr/bin"
+
             ],
             "defines": [
                 "_DEBUG",

@@ -3,6 +3,8 @@
 
 #include "ofMain.h"
 
+#include "ofxGui.h"
+
 #include "FractalMode.h"
 #include "DrawMode1.h"
 #include "DrawMode2.h"
@@ -10,9 +12,7 @@
 #include "KochSnowFlake.h"
 #include "CustomMode1.h"
 #include "CustomMode2.h"
-#include "CustomMode3.h"
-#include "CustomMode4.h"
-#include "CustomMode5.h"
+
 
 
 
@@ -22,7 +22,7 @@ class ofApp : public ofBaseApp{
 		void update();
 		void draw();
 		void drawOmega();
-		vector<FractalMode*> ModeVector{new DrawMode1(), new DrawMode2(), new DrawMode3(), new KochSnowFlake(), new CustomMode1(), new CustomMode2(),new CustomMode3(),new CustomMode4(),new CustomMode5()};
+		vector<FractalMode*> ModeVector{new DrawMode1(), new DrawMode2(), new DrawMode3(), new KochSnowFlake(), new CustomMode1(), new CustomMode2()};
 
 		void keyPressed(int key);
 		void keyReleased(int key);
@@ -46,9 +46,33 @@ class ofApp : public ofBaseApp{
 		int omegaFrames = 0;
 		int frameCount= 0;
 		ofSoundPlayer song;
+		ofxPanel gui;
+
+		ofxPanel mode1gui;
+
+		ofParameter <ofVec3f> uiPosition;
+		ofParameter <ofVec3f> fractalPosition;
+
+		ofParameter <float> fractalSize;
+		ofParameter <int> camDistance;
+		ofxButton resetcam;
+		ofEasyCam camera;
+		ofLight light;
+		ofxToggle ignoreCamScroll;
+		ofxToggle showLight;
+		ofxToggle f1;
+		ofxToggle f2;
+		ofxToggle f3;
+		ofxToggle f4;
+		ofxToggle f5;
+
+		ofParameter <float> mode1Size;
 
 
-
-
-
+		ofxToggle m1;
+		ofxToggle m2;
+		ofxToggle m3;
+		ofxToggle m4;
+		ofxToggle m5;
+		ofxToggle m6;
 };

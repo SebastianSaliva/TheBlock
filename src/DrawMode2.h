@@ -14,6 +14,9 @@ class DrawMode2: public FractalMode {
 
     void draw(int length, int n, int x, int y, int d) {
 
+        ofNoFill();
+
+
         if ((n+2)%3 == 0) {ofSetColor(255, 0, 0);}
         else if ((n+1)%3 == 0) {ofSetColor(0, 255, 0);}
         else {ofSetColor(0, 0, 255);}
