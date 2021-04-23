@@ -38,6 +38,7 @@ class ofApp : public ofBaseApp{
 
 	private:
 		int depth = 5;
+		int kochDepth = 0;
 		bool animationIsActive = false;
 		int framesSinceAnimationWasActive = 0;
 		int animSpeed = 1;

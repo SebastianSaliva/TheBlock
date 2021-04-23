@@ -163,7 +163,10 @@ void ofApp::draw(){
 
     if (ModeVector[3]->getActive()){
         KochSnowFlake* mode = dynamic_cast<KochSnowFlake*>(ModeVector[3]);
-        mode->draw();
+        double height = (ofGetWidth()/2)*sin(1.0472);
+        mode->draw(ofGetWidth()/2 - ofGetWidth()/4, ofGetHeight()/2 - height/2, ofGetWidth()/2 + ofGetWidth()/4,ofGetHeight()/2 - height/2, 0, kochDepth);
+        mode->draw(ofGetWidth()/2 + ofGetWidth()/4, ofGetHeight()/2 - height/2, ofGetWidth()/2,ofGetHeight()/2 + height/2, 4.18879, kochDepth);
+        mode->draw(ofGetWidth()/2, ofGetHeight()/2 + height/2, ofGetWidth()/2 - ofGetWidth()/4,ofGetHeight()/2 - height/2, 2.0944, kochDepth);
     }
 
     if (ModeVector[4]->getActive()){
@@ -214,6 +217,9 @@ void ofApp::keyPressed(int key){
             if (!animationIsActive){
                 if (depth > 0){
                 depth -= 1;}
+                if(kochDepth > 0){
+                    kochDepth--;
+                }
             }
             break;
 
@@ -221,6 +227,7 @@ void ofApp::keyPressed(int key){
             
             if (!animationIsActive){
             depth += 1;
+            kochDepth++;
             }
             break;
 
