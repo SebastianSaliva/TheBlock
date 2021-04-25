@@ -9,7 +9,7 @@ class DrawMode2: public FractalMode {
     DrawMode2():FractalMode(){}
 
     string getName() {return "Trees";}
-    
+
     void draw(){}
 
     void draw(int length, int n, int x, int y, int d) {
@@ -17,9 +17,9 @@ class DrawMode2: public FractalMode {
         ofNoFill();
 
 
-        if ((n+2)%3 == 0) {ofSetColor(255, 0, 0);}
-        else if ((n+1)%3 == 0) {ofSetColor(0, 255, 0);}
-        else {ofSetColor(0, 0, 255);}
+        if ((n+2)%3 == 0) {ofSetColor(color1);}
+        else if ((n+1)%3 == 0) {ofSetColor(color1);}
+        else {ofSetColor(color1);}
 
         if(n > 0){
             int middleY = y-length;

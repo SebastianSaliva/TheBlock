@@ -10,24 +10,25 @@ class CustomMode1: public FractalMode {
     CustomMode1():FractalMode(){}
 
     string getName() {return "Custom Mode 1";}
-    
+
     void draw(){}
 
     void draw6(float x, float y, float l, int n) {draw6(x, y, l, n, "begin");}
     
     void draw6(float x, float y, float l, int n, string i) {
         ofFill();
-        if ((n+2)%3 == 0) {ofSetColor(255, 0, 0);}
-        else if ((n+1)%3 == 0) {ofSetColor(0, 255, 0);}
-        else {ofSetColor(0, 0, 255);}
+        
+        if ((n+2)%3 == 0) {ofSetColor(color1);}
+        else if ((n+1)%3 == 0) {ofSetColor(color1);}
+        else {ofSetColor(color1);}
 
         if (n==0){return;}
 
         ofDrawRectangle(x-l/2, y-l/2, l, l);
 
-        if ((n+2)%3 == 0) {ofSetColor(127, 0, 0);}
-        else if ((n+1)%3 == 0) {ofSetColor(0, 127, 0);}
-        else {ofSetColor(0, 0, 127);}
+        if ((n+2)%3 == 0) {ofSetColor(color1.r, 0, 0);}
+        else if ((n+1)%3 == 0) {ofSetColor(0, color1.r, 0);}
+        else {ofSetColor(0, 0, color1.r);}
 
         ofDrawTriangle(x-l/2, y-l/2, x+l/2, y+l/2, x+l/2, y-l/2);
 
@@ -47,15 +48,11 @@ class CustomMode1: public FractalMode {
 
 void draw2(float x, float y, float l, int n, int colorLevel){
 
-    
     if (n == 0){return;}
-
-
 
     ofColor first(colorLevel-50, 0, 0);
     ofColor second(colorLevel-100, 0, 0);
     ofColor third(colorLevel, 0, 0);
-
 
     float dis = sqrt(pow(l,2) - pow(l/2, 2));
     ofPoint a(x, y);
@@ -68,7 +65,6 @@ void draw2(float x, float y, float l, int n, int colorLevel){
     
     ofFill();
     
-
     ofSetColor(first);
     ofDrawTriangle(a, b, c);
     ofDrawTriangle(a, c, d);
@@ -81,26 +77,21 @@ void draw2(float x, float y, float l, int n, int colorLevel){
     ofDrawTriangle(a, f, g);
     ofDrawTriangle(a, g, b);
     
-
     draw2(a.x, a.y, l/1.5, n-1,colorLevel-20);
-
-    
 }
 
 
 void draw2(float x, float y, float l, int n) {
-    draw2(x, y, l, n, 255);
+    draw2(x, y, l, n, color1.r);
 }
-
-
 
 void draw3(ofPoint a, float l, int n) {
 
     if (!n) {return;}
 
-    if ((n+2)%3 == 0) {ofSetColor(255,0 , 0);}
-    else if ((n+1)%3 == 0) {ofSetColor(0, 255, 0);}
-    else {ofSetColor(0, 0, 255);}
+    if ((n+2)%3 == 0) {ofSetColor(color1);}
+    else if ((n+1)%3 == 0) {ofSetColor(color2);}
+    else {ofSetColor(color3);}
 
     ofPoint b(a.x - l, a.y);
     ofPoint c(a.x + l, a.y);
@@ -115,11 +106,6 @@ void draw3(ofPoint a, float l, int n) {
     draw3(d, l/2, n-1);
     draw3(e, l/2, n-1);
 }
-
-
-
-
-
 
 void draw4(ofPoint point, float l, int n) {
 
@@ -159,16 +145,14 @@ void draw4(ofPoint point, float l, int n) {
 
 void draw5(ofPoint point, float l, int n) {
 
-
     ofFill();
     
     ofColor left(0, 0, 0);
     ofColor right(0, 0, 0);
     
-    
-    if ((n+2)%3 == 0) {left.r = 255; right.r = 155;}
-    else if ((n+1)%3 == 0) {left.g = 255; right.g = 155;}
-    else {left.b = 255; right.b = 155;}
+    if (n%2 == 0) {left = color1; right = color2;}
+    else {left = color2; right =color1;}
+
 
     float x = point.x;
     float y = point.y;
@@ -198,7 +182,6 @@ void draw5(ofPoint point, float l, int n) {
 
 void draw1(float x, float y, float l, int n, int colorLevel){
 
-    
     if (n == 0){return;}
     float dis = sqrt(pow(l,2) - pow(l/2, 2));
     ofPoint a(x, y);
@@ -223,19 +206,14 @@ void draw1(float x, float y, float l, int n, int colorLevel){
     ofDrawTriangle(a, f, g);
     ofDrawTriangle(a, g, b);
     
-
     draw1(c.x, c.y, l/2, n-1,colorLevel-10);
     draw1(e.x, e.y, l/2, n-1,colorLevel-10);
     draw1(g.x, g.y, l/2, n-1,colorLevel-10);
-    
 }
 
 
 void draw1(float x, float y, float l, int n) {
-
-    draw1(x, y, l, n, 255);
+    draw1(x, y, l, n, color1.r);
 }
-
-
 
 };

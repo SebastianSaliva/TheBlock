@@ -10,7 +10,9 @@ class CustomMode2: public FractalMode {
     CustomMode2():FractalMode(){}
 
     string getName() {return "Custom Mode 2 (3d fractals, only this mode will be drawn)";}
-    
+        ofColor color1;
+    ofColor color2;
+    ofColor color3;
     void draw(){}
 
     void draw1(ofPoint a, float l, int n){        
@@ -23,9 +25,9 @@ class CustomMode2: public FractalMode {
 
         ofNoFill();
         if (n==0) {return;}
-        if ((n+2)%3 == 0) {ofSetColor(255, 0, 0, 100);}
-        else if ((n+1)%3 == 0) {ofSetColor(0, 255, 0, 50);}
-        else {ofSetColor(0, 0, 255, 150);}      
+        if ((n+2)%3 == 0) {ofSetColor(color1, 200);}
+        else if ((n+1)%3 == 0) {ofSetColor(color1, 100);}
+        else {ofSetColor(color1, 150);}      
         
     ofPoint up(a.x, a.y-(l*3/4), a.z);
     ofPoint down(a.x, a.y+(l*3/4), a.z);
@@ -63,9 +65,9 @@ class CustomMode2: public FractalMode {
     float  z = a.z;
 
     if (n==0) {return;}
-    if ((n+2)%3 == 0) {ofSetColor(0, 75, 150);}
-    else if ((n+1)%3 == 0) {ofSetColor(75, 0, 150);}
-    else {ofSetColor(150, 0, 75);}      
+    if ((n+2)%3 == 0) {ofSetColor(color1);}
+    else if ((n+1)%3 == 0) {ofSetColor(color2);}
+    else {ofSetColor(color3);}      
         
 
     ofPoint b1(x-l, y, z+l);
@@ -108,9 +110,9 @@ class CustomMode2: public FractalMode {
     float  z = a.z;
 
     if (n==0) {return;}
-    if ((n+2)%3 == 0) {ofSetColor(0, 75, 150);}
-    else if ((n+1)%3 == 0) {ofSetColor(75, 0, 150);}
-    else {ofSetColor(150, 0, 75);}      
+    if ((n+2)%3 == 0) {ofSetColor(color1);}
+    else if ((n+1)%3 == 0) {ofSetColor(color2);}
+    else {ofSetColor(color3);}      
         
 
     ofPoint b1(x-l, y, z+l);
@@ -181,67 +183,8 @@ class CustomMode2: public FractalMode {
 
     void draw4(ofPoint a, float l, int n){
 
-    if (n == 0) {return;}
-    else if (n == 1) {
-        ofSetColor(0, 0, 155);
-        ofFill();
-        ofDrawBox(a, l);
-        return;
     }
 
-    else {
-        
-        float x = a.x;
-        float y = a.y;
-        float z = a.z;
-
-        ofPoint b(x+l/3, y, z+l/3);
-        ofPoint c(x, y+l/3, z+l/3);
-        ofPoint d(x-l/3, y, z+l/3);
-        ofPoint e(x, y-l/3, z+l/3);
-        ofPoint f(x+l/3, y+l/3, z+l/3);
-        ofPoint g(x-l/3, y+l/3, z+l/3);
-        ofPoint h(x+l/3, y-l/3, z+l/3);
-        ofPoint i(x-l/3, y-l/3, z+l/3);
-        
-        draw4(b, l/3, n-1);
-        draw4(c, l/3, n-1);
-        draw4(d, l/3, n-1);
-        draw4(e, l/3, n-1);
-        draw4(f, l/3, n-1);
-        draw4(g, l/3, n-1);
-        draw4(h, l/3, n-1);
-        draw4(i, l/3, n-1);
-
-        b.z -= l*2/3;
-        c.z -= l*2/3;
-        d.z -= l*2/3;
-        e.z -= l*2/3;
-        f.z -= l*2/3;
-        g.z -= l*2/3;
-        h.z -= l*2/3;
-        i.z -= l*2/3;
-
-        draw4(b, l/3, n-1);
-        draw4(c, l/3, n-1);
-        draw4(d, l/3, n-1);
-        draw4(e, l/3, n-1);
-        draw4(f, l/3, n-1);
-        draw4(g, l/3, n-1);
-        draw4(h, l/3, n-1);
-        draw4(i, l/3, n-1);
-
-        f.z+= l/3;
-        g.z+= l/3;
-        h.z+= l/3;
-        i.z+= l/3;
-
-        draw4(f, l/3, n-1);
-        draw4(g, l/3, n-1);
-        draw4(h, l/3, n-1);
-        draw4(i, l/3, n-1);
-    }
-}
 
     void draw5(ofPoint a, float l, int n) {
 
@@ -251,9 +194,10 @@ class CustomMode2: public FractalMode {
         float y = a.y;
         float z = a.z;
         ofFill();
-        if ((n+2)%3 == 0) {ofSetColor(0, 75, 150);}
-        else if ((n+1)%3 == 0) {ofSetColor(75, 0, 150);}
-        else {ofSetColor(150, 0, 75);}   
+    
+        if ((n+2)%3 == 0) {ofSetColor(color1);}
+        else if ((n+1)%3 == 0) {ofSetColor(color2);}
+        else {ofSetColor(color3);}   
 
         ofDrawBox(a, l*2);
 
@@ -267,5 +211,140 @@ class CustomMode2: public FractalMode {
 
     }
 
+    void draw6(ofPoint a, float l, int n, vector<int> numbers){
+
+    if (n == 0) {return;}
+    else if (n == 1) {
+        ofSetColor(color1);
+        ofFill();
+        ofDrawBox(a, l);
+        return;
+    }
+
+    else {
+        
+        float x = a.x;
+        float y = a.y;
+        float z = a.z;
+        float d = l/3; //how far to move
+
+        if (numbers[0]) {
+        ofPoint t1(x-d, y+d, z-d);
+        draw6(t1, l/3, n-1, numbers);
+        }          
+        
+        if (numbers[1]) {
+        ofPoint t2(x, y+d, z-d);   
+        draw6(t2, l/3, n-1, numbers);
+        }        
+         
+        if (numbers[2]) {
+        ofPoint t3(x+d, y+d, z-d);       
+        draw6(t3, l/3, n-1, numbers);
+        }    
+        if (numbers[3]) {
+        ofPoint t4(x-d, y+d, z);      
+        draw6(t4, l/3, n-1, numbers);
+        }    
+        if (numbers[4]) {
+        ofPoint t5(x, y+d, z);
+        draw6(t5, l/3, n-1, numbers);
+        }    
+        if (numbers[5]) {
+        ofPoint t6(x+d, y+d, z);
+        draw6(t6, l/3, n-1, numbers);
+        }    
+        if (numbers[6]) {
+        ofPoint t7(x-d, y+d, z+d); 
+        draw6(t7, l/3, n-1, numbers);
+        }    
+        if (numbers[7]) {
+        ofPoint t8(x, y+d, z+d);   
+        draw6(t8, l/3, n-1, numbers);
+        }    
+        if (numbers[8]) {
+        ofPoint t9(x+d, y+d, z+d);
+        draw6(t9, l/3, n-1, numbers);
+        }
+
+        if (numbers[9]) {
+        ofPoint m1(x-d, y, z-d);
+        draw6(m1, l/3, n-1, numbers);
+        }          
+        
+        if (numbers[10]) {
+        ofPoint m2(x, y, z-d);   
+        draw6(m2, l/3, n-1, numbers);
+        }        
+         
+        if (numbers[11]) {
+        ofPoint m3(x+d, y, z-d);       
+        draw6(m3, l/3, n-1, numbers);
+        }    
+        if (numbers[12]) {
+        ofPoint m4(x-d, y, z);      
+        draw6(m4, l/3, n-1, numbers);
+        }    
+        if (numbers[13]) {
+        ofPoint m5(x, y, z);
+        draw6(m5, l/3, n-1, numbers);
+        }    
+        if (numbers[14]) {
+        ofPoint m6(x+d, y, z);
+        draw6(m6, l/3, n-1, numbers);
+        }    
+        if (numbers[15]) {
+        ofPoint m7(x-d, y, z+d); 
+        draw6(m7, l/3, n-1, numbers);
+        }    
+        if (numbers[16]) {
+        ofPoint m8(x, y, z+d);   
+        draw6(m8, l/3, n-1, numbers);
+        }
+        if (numbers[17]) {
+        ofPoint m9(x+d, y, z+d);
+        draw6(m9, l/3, n-1, numbers);
+        }            
+
+        if (numbers[18]) {
+        ofPoint d1(x-d, y-d, z-d);
+        draw6(d1, l/3, n-1, numbers);
+        }          
+        
+        if (numbers[19]) {
+        ofPoint d2(x, y-d, z-d);   
+        draw6(d2, l/3, n-1, numbers);
+        }        
+         
+        if (numbers[20]) {
+        ofPoint d3(x+d, y-d, z-d);       
+        draw6(d3, l/3, n-1, numbers);
+        }    
+        if (numbers[21]) {
+        ofPoint d4(x-d, y-d, z);      
+        draw6(d4, l/3, n-1, numbers);
+        }    
+        if (numbers[22]) {
+        ofPoint d5(x, y-d, z);
+        draw6(d5, l/3, n-1, numbers);
+        }    
+        if (numbers[23]) {
+        ofPoint d6(x+d, y-d, z);
+        draw6(d6, l/3, n-1, numbers);
+        }    
+        if (numbers[24]) {
+        ofPoint d7(x-d, y-d, z+d); 
+        draw6(d7, l/3, n-1, numbers);
+        }    
+        if (numbers[25]) {
+        ofPoint d8(x, y-d, z+d);   
+        draw6(d8, l/3, n-1, numbers);
+        }    
+        if (numbers[26]) {
+        ofPoint d9(x+d, y-d, z+d);
+        draw6(d9, l/3, n-1, numbers);
+        }
+    }
+    }
 
 };

@@ -49,6 +49,12 @@ class ofApp : public ofBaseApp{
 		ofSoundPlayer song;
 		ofxPanel gui;
 
+		ofxPanel colorpanel;
+
+		ofParameter <ofVec3f> color1;
+		ofParameter <ofVec3f> color2;
+		ofParameter <ofVec3f> color3;		 
+
 		ofxPanel mode1gui;
 
 		ofParameter <ofVec3f> uiPosition;
@@ -57,6 +63,7 @@ class ofApp : public ofBaseApp{
 		ofParameter <float> fractalSize;
 		ofParameter <int> camDistance;
 		ofxButton resetcam;
+		ofxButton randomizeFractal;
 		ofEasyCam camera;
 		ofLight light;
 		ofxToggle ignoreCamScroll;
@@ -66,14 +73,117 @@ class ofApp : public ofBaseApp{
 		ofxToggle f3;
 		ofxToggle f4;
 		ofxToggle f5;
+		ofxToggle f6;
+		ofxToggle f7;
+		ofxToggle f8;
+		ofxToggle f9;
+		ofxToggle f10;
+
+		vector<int> numbers;
+
+		vector<int> sponge = {
+
+		1, 1, 1,
+		1, 0, 1,
+		1, 1, 1,
+
+		1, 0, 1,
+		0, 0, 0,
+		1, 0 ,1,
+
+		1, 1, 1,
+		1, 0, 1,
+		1, 1, 1,
+
+		};
+
+		vector<int> test1 = {
+
+		0, 0, 0,
+		0, 1, 0,
+		0, 0, 0,
+
+		0, 1, 0,
+		1, 1, 1,
+		0, 1, 0,
+
+		0, 0, 0,
+		0, 1, 0,
+		0, 0, 0,
+
+		};
+
+		vector<int> test2 = {
+
+		1, 0, 1,
+		0, 0, 0,
+		1, 0, 1,
+
+		0, 0, 0,
+		0, 1, 0,
+		0, 0, 0,
+
+		1, 0, 1,
+		0, 0, 0,
+		1, 0, 1,
+
+		};
+
+
+		vector<int> test3 = {
+
+		0, 0, 0,
+		0, 1, 0,
+		0, 0, 0,
+
+		0, 1, 0,
+		1, 1, 1,
+		0, 1, 0,
+
+		1, 1, 1,
+		1, 1, 1,
+		1, 1, 1,
+
+		};
 
 		ofParameter <float> mode1Size;
-
-
 		ofxToggle m1;
 		ofxToggle m2;
 		ofxToggle m3;
 		ofxToggle m4;
 		ofxToggle m5;
 		ofxToggle m6;
+
+		ofxPanel fractal10gui;
+		ofxButton updateFractal10;
+		ofxToggle u1;
+		ofxToggle u2;
+		ofxToggle u3;
+		ofxToggle u4;
+		ofxToggle u5;
+		ofxToggle u6;
+		ofxToggle u7;
+		ofxToggle u8;
+		ofxToggle u9;
+		ofxToggle i1;
+		ofxToggle i2;
+		ofxToggle i3;
+		ofxToggle i4;
+		ofxToggle i5;
+		ofxToggle i6;
+		ofxToggle i7;
+		ofxToggle i8;
+		ofxToggle i9;
+		ofxToggle o1;
+		ofxToggle o2;
+		ofxToggle o3;
+		ofxToggle o4;
+		ofxToggle o5;
+		ofxToggle o6;
+		ofxToggle o7;
+		ofxToggle o8;
+		ofxToggle o9;
+		vector<int> fractal10nums = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,};
+		vector<ofxToggle> fractal10toggles;
+
 };

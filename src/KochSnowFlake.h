@@ -7,7 +7,7 @@ class KochSnowFlake: public FractalMode {
 
     public:
     
-    KochSnowFlake():FractalMode(){}
+    KochSnowFlake(){}
 
     string getName() {return "Koch Snowflake";}
     
@@ -17,8 +17,8 @@ class KochSnowFlake: public FractalMode {
         if(n==1){
             ofDrawLine(x1, y1, x2, y2);
         }
+        
         else if(n==2){
-
             ofVec2f p1(x1, y1);
             ofVec2f p2(x2, y2);
             double angle1 = angle + 1.0472;
