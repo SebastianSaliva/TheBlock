@@ -7,7 +7,10 @@ class KochSnowFlake: public FractalMode {
 
     public:
     
-    KochSnowFlake(){}
+    ofColor color1;
+    ofColor color2;
+    ofColor color3;
+    KochSnowFlake():FractalMode(){color1 = ofColor(255, 0, 0); color2 = ofColor(255, 0, 0); color3 = ofColor(255, 0, 0);}
 
     string getName() {return "Koch Snowflake";}
     

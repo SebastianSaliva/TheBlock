@@ -4,16 +4,8 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
 
-
-
     song.load("song.wav");
     song.setVolume(0.5);
-    
-    colorpanel.setup();
-    colorpanel.add(color1.set("Color 1", ofVec3f(255, 0, 0), ofVec3f(0, 0, 0), ofVec3f(255, 255, 255)));
-    colorpanel.add(color2.set("Color 2", ofVec3f(0, 255, 0), ofVec3f(0, 0, 0), ofVec3f(255, 255, 255)));
-    colorpanel.add(color3.set("Color 3", ofVec3f(0, 0, 255), ofVec3f(0, 0, 0), ofVec3f(255, 255, 255)));
-    
     gui.setup();
     
     gui.add(showLight.setup("Show light source", true));
@@ -36,9 +28,44 @@ void ofApp::setup(){
     gui.add(f7.setup("3dFractal 7", false));
     gui.add(f8.setup("3dFractal 8", false));
     gui.add(f9.setup("3dFractal 9", false));
+    gui.add(randomizeFractal.setup("Randomize Fractal 9"));
     gui.add(f10.setup("3dFractal 10", false));
 
-    gui.add(randomizeFractal.setup("Randomize Fractal 9"));
+    fractal10gui.setup();
+
+    fractal10gui.add(updateFractal10.setup("update"));
+
+    fractal10gui.add(u1.setup(false));
+    fractal10gui.add(u2.setup(false));
+    fractal10gui.add(u3.setup(false));
+    fractal10gui.add(u4.setup(false));
+    fractal10gui.add(u5.setup(false));
+    fractal10gui.add(u6.setup(false));
+    fractal10gui.add(u7.setup(false));
+    fractal10gui.add(u8.setup(false));
+    fractal10gui.add(u9.setup(false));
+
+    fractal10gui.add(i1.setup(false));
+    fractal10gui.add(i2.setup(false));
+    fractal10gui.add(i3.setup(false));
+    fractal10gui.add(i4.setup(false));
+    fractal10gui.add(i5.setup(false));
+    fractal10gui.add(i6.setup(false));
+    fractal10gui.add(i7.setup(false));
+    fractal10gui.add(i8.setup(false));
+    fractal10gui.add(i9.setup(false));
+    
+    fractal10gui.add(o1.setup(false));
+    fractal10gui.add(o2.setup(false));
+    fractal10gui.add(o3.setup(false));
+    fractal10gui.add(o4.setup(false));
+    fractal10gui.add(o5.setup(false));
+    fractal10gui.add(o6.setup(false));
+    fractal10gui.add(o7.setup(false));
+    fractal10gui.add(o8.setup(false));
+    fractal10gui.add(o9.setup(false));
+    
+    fractal10toggles = {u1, u2, u3, u4, u5, u6, u7, u8, u9,i1, i2, i3, i4, i5, i6, i7, i8, i9, o1, o2, o3, o4, o5, o6, o7, o8, o9};
 
     mode1gui.setup();
     mode1gui.add(mode1Size.set("Fractal Size", 200, 0, 1500));
@@ -50,43 +77,10 @@ void ofApp::setup(){
     mode1gui.add(m5.setup("draw custom fractal 5", false));
     mode1gui.add(m6.setup("draw custom fractal 6", false));
 
-
-        for (int r = 0; r <= 27; r++) { 
-        int num = ofRandom(2);
-        numbers.push_back(num);
-        }
-    
-    fractal10gui.setup();
-    fractal10gui.add(updateFractal10.setup("update"));
-    fractal10gui.add(u1.setup(false));
-    fractal10gui.add(u2.setup(false));
-    fractal10gui.add(u3.setup(false));
-    fractal10gui.add(u4.setup(false));
-    fractal10gui.add(u5.setup(false));
-    fractal10gui.add(u6.setup(false));
-    fractal10gui.add(u7.setup(false));
-    fractal10gui.add(u8.setup(false));
-    fractal10gui.add(u9.setup(false));
-    fractal10gui.add(i1.setup(false));
-    fractal10gui.add(i2.setup(false));
-    fractal10gui.add(i3.setup(false));
-    fractal10gui.add(i4.setup(false));
-    fractal10gui.add(i5.setup(false));
-    fractal10gui.add(i6.setup(false));
-    fractal10gui.add(i7.setup(false));
-    fractal10gui.add(i8.setup(false));
-    fractal10gui.add(i9.setup(false));
-    fractal10gui.add(o1.setup(false));
-    fractal10gui.add(o2.setup(false));
-    fractal10gui.add(o3.setup(false));
-    fractal10gui.add(o4.setup(false));
-    fractal10gui.add(o5.setup(false));
-    fractal10gui.add(o6.setup(false));
-    fractal10gui.add(o7.setup(false));
-    fractal10gui.add(o8.setup(false));
-    fractal10gui.add(o9.setup(false));
-
-	fractal10toggles = {u1, u2, u3, u4, u5, u6, u7, u8, u9, i1, i2, i3, i4, i5, i6, i7, i8, i9, o1, o2, o3, o4, o5, o6, o7, o8, o9};
+    colorpanel.setup();
+    colorpanel.add(color1.set("color1", ofVec3f(255, 0, 0), ofVec3f(0, 0, 0), ofVec3f(255, 255, 255)));
+    colorpanel.add(color2.set("color3", ofVec3f(0, 255, 0), ofVec3f(0, 0, 0), ofVec3f(255, 255, 255)));
+    colorpanel.add(color3.set("color3", ofVec3f(0, 0, 255), ofVec3f(0, 0, 0), ofVec3f(255, 255, 255)));
 }
 
 //--------------------------------------------------------------
@@ -98,24 +92,24 @@ void ofApp::update(){
     light.setPosition(uiPosition->x, uiPosition->y, uiPosition->z);
     if (resetcam){camera.reset();}
 
-    if (randomizeFractal) {
-        numbers.clear();
-        for (int r = 0; r <= 27; r++) { 
-        int num = ofRandom(2);
-        numbers.push_back(num);
-        }
-    }
-
-    if (updateFractal10) {
+    //if (updateFractal10) {
         fractal10nums.clear();
-        for (int i = 0; i < fractal10toggles.size(); i++) {
-            if (fractal10toggles[i]) {fractal10nums.push_back(1);}
-            else {fractal10nums.push_back(0);}
+        for (ofxToggle tog: fractal10toggles) {
+            if (tog) {fractal10nums.push_back(1);} 
+            else {fractal10nums.push_back(1);}
         }
+    //}
+
+    if(randomizeFractal) {
+        numbers.clear();
+        for (int n: fractal10nums) {
+        n = ofRandom(2);
+        numbers.push_back(n);
+        }
+
     }
 
 }
-
 
 
 void ofApp::drawOmega(){
@@ -154,9 +148,6 @@ void ofApp::draw(){
     if (omegaAnimationIsPlaying) {drawOmega(); return;}
 
 
-    colorpanel.draw();
-
-
     ofSetColor(255);
     ofDrawBitmapString("Depth: "+ to_string(depth), ofGetWidth()/2 -20 , ofGetHeight()-10); //prints depth
     
@@ -185,6 +176,7 @@ void ofApp::draw(){
     int i = 1;
     ofDrawBitmapString("Modes", 0, 10);
     
+    
     for (FractalMode* mode: ModeVector) {if(mode->getActive()) {ofSetColor(0,255,0);} else{ofSetColor(255,0,0);} ofDrawBitmapString("press "+to_string(i)+" : "+ mode->getName(), 0, y); y+= 15; i++;} //prints active modes
 
 
@@ -194,33 +186,36 @@ void ofApp::draw(){
 
     if (ModeVector[5]->getActive()){
         CustomMode2* mode = dynamic_cast<CustomMode2*>(ModeVector[5]);
+        mode->color1 = ofColor(color1->x, color1->y, color1->z);
+        mode->color2 = ofColor(color2->x, color2->y, color2->z);
+        mode->color3 = ofColor(color3->x, color3->y, color3->z);
         camera.begin();
         light.enable();
         ofEnableDepthTest();
 
         ofFill();
         ofSetColor(255);
-        mode->setColor1(ofColor(color1->x, color1->y, color1->z));
-        mode->setColor2(ofColor(color2->x, color2->y, color2->z));
-        mode->setColor3(ofColor(color3->x, color3->y, color3->z));
+        
         if(showLight){ofDrawSphere(uiPosition->x, uiPosition->y, uiPosition->z, fractalSize/20);}
         
         if (f1) {mode->draw1(fractalPosition, fractalSize, depth);}
         if (f2) {mode->draw2(fractalPosition, fractalSize, depth);}
         if (f3) {mode->draw3(fractalPosition, fractalSize, depth);}
-        if (f4) {mode->draw5(fractalPosition, fractalSize, depth);}        
-        if (f5) {mode->draw6(fractalPosition, fractalSize, depth, sponge);}
-        if (f6) {mode->draw6(fractalPosition, fractalSize, depth, test1);}
-        if (f7) {mode->draw6(fractalPosition, fractalSize, depth, test2);}
-        if (f8) {mode->draw6(fractalPosition, fractalSize, depth, test3);}
-        if (f9) {mode->draw6(fractalPosition, fractalSize, depth,  numbers);}
+        if (f4) {mode->draw4(fractalPosition, fractalSize, depth);}
+        if (f5) {mode->draw5(fractalPosition, fractalSize, depth);}
+        if (f6) {mode->draw6(fractalPosition, fractalSize, depth, sponge);}
+        if (f7) {mode->draw6(fractalPosition, fractalSize, depth, test1);}
+        if (f8) {mode->draw6(fractalPosition, fractalSize, depth, test2);}
+        if (f9) {mode->draw6(fractalPosition, fractalSize, depth, numbers);}
         if (f10) {mode->draw6(fractalPosition, fractalSize, depth, fractal10nums);}
+
         camera.end();
         light.disable();
         ofDisableLighting();
         ofDisableDepthTest();
-        gui.draw();
         if (f10) {fractal10gui.draw();}
+        gui.draw();
+        colorpanel.draw();
         return;
     }
 
@@ -228,31 +223,31 @@ void ofApp::draw(){
     
     if (ModeVector[0]->getActive()){
         DrawMode1* mode = dynamic_cast<DrawMode1*>(ModeVector[0]);
-        mode->setColor1(ofColor(color1->x, color1->y, color1->z));
-        mode->setColor2(ofColor(color2->x, color2->y, color2->z));
-        mode->setColor3(ofColor(color3->x, color3->y, color3->z));
+        mode->color1 = ofColor(color1->x, color1->y, color1->z);
+        mode->color2 = ofColor(color2->x, color2->y, color2->z);
+        mode->color3 = ofColor(color3->x, color3->y, color3->z);
         mode->draw(ofGetWidth()/2, ofGetHeight()/2, depth);
     }
 
     if (ModeVector[1]->getActive()){
         DrawMode2* mode = dynamic_cast<DrawMode2*>(ModeVector[1]);
-        mode->setColor1(ofColor(color1->x, color1->y, color1->z));
-        mode->setColor2(ofColor(color2->x, color2->y, color2->z));
-        mode->setColor3(ofColor(color3->x, color3->y, color3->z));
-        
+        mode->color1 = ofColor(color1->x, color1->y, color1->z);
+        mode->color2 = ofColor(color2->x, color2->y, color2->z);
+        mode->color3 = ofColor(color3->x, color3->y, color3->z);
         mode->draw(200,depth, ofGetWidth()/2, ofGetHeight()-50, ofRandom(30, 70));
     }
 
     if (ModeVector[2]->getActive()){
         DrawMode3* mode = dynamic_cast<DrawMode3*>(ModeVector[2]);
-        mode->setColor1(ofColor(color1->x, color1->y, color1->z));
-        mode->setColor2(ofColor(color2->x, color2->y, color2->z));
-        mode->setColor3(ofColor(color3->x, color3->y, color3->z));
+        mode->color1 = ofColor(color1->x, color1->y, color1->z);
+        mode->color2 = ofColor(color2->x, color2->y, color2->z);
+        mode->color3 = ofColor(color3->x, color3->y, color3->z);
         mode->draw(ofGetWidth() / 2 - ofGetHeight() / 4, 10, ofGetHeight() / 2, depth);
     }
 
     if (ModeVector[3]->getActive()){
         KochSnowFlake* mode = dynamic_cast<KochSnowFlake*>(ModeVector[3]);
+
         double height = (ofGetWidth()/2)*sin(1.0472);
         mode->draw(ofGetWidth()/2 - ofGetWidth()/4, ofGetHeight()/2 - height/2, ofGetWidth()/2 + ofGetWidth()/4,ofGetHeight()/2 - height/2, 0, kochDepth);
         mode->draw(ofGetWidth()/2 + ofGetWidth()/4, ofGetHeight()/2 - height/2, ofGetWidth()/2,ofGetHeight()/2 + height/2, 4.18879, kochDepth);
@@ -261,10 +256,11 @@ void ofApp::draw(){
 
     if (ModeVector[4]->getActive()){
         CustomMode1* mode = dynamic_cast<CustomMode1*>(ModeVector[4]);
+        mode->color1 = ofColor(color1->x, color1->y, color1->z);
+        mode->color2 = ofColor(color2->x, color2->y, color2->z);
+        mode->color3 = ofColor(color3->x, color3->y, color3->z);
         mode1gui.draw();
-        mode->setColor1(ofColor(color1->x, color1->y, color1->z));
-        mode->setColor2(ofColor(color2->x, color2->y, color2->z));
-        mode->setColor3(ofColor(color3->x, color3->y, color3->z));
+
         if (m1) {mode->draw1(ofGetWidth()/2, ofGetHeight()/2, mode1Size, depth);}
         if (m2) {mode->draw2(ofGetWidth()/2, ofGetHeight()/2, mode1Size, depth);}
         if (m3) {mode->draw3(ofPoint(ofGetWidth()/2, ofGetHeight()/2), mode1Size, depth);}
@@ -275,7 +271,7 @@ void ofApp::draw(){
 
 
     }
-    
+    colorpanel.draw();
 }
 
 //--------------------------------------------------------------

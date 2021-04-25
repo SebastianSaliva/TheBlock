@@ -7,12 +7,13 @@ class CustomMode2: public FractalMode {
 
     public:
 
-    CustomMode2():FractalMode(){}
-
-    string getName() {return "Custom Mode 2 (3d fractals, only this mode will be drawn)";}
-        ofColor color1;
+    ofColor color1;
     ofColor color2;
     ofColor color3;
+    CustomMode2():FractalMode(){color1 = ofColor(255, 0, 0); color2 = ofColor(255, 0, 0); color3 = ofColor(255, 0, 0);}
+
+    string getName() {return "Custom Mode 2 (3d fractals, only this mode will be drawn)";}
+    
     void draw(){}
 
     void draw1(ofPoint a, float l, int n){        
@@ -25,9 +26,9 @@ class CustomMode2: public FractalMode {
 
         ofNoFill();
         if (n==0) {return;}
-        if ((n+2)%3 == 0) {ofSetColor(color1, 200);}
-        else if ((n+1)%3 == 0) {ofSetColor(color1, 100);}
-        else {ofSetColor(color1, 150);}      
+        if ((n+2)%3 == 0) {ofSetColor(color1, 150);}
+        else if ((n+1)%3 == 0) {ofSetColor(color2, 100);}
+        else {ofSetColor(color3, 200);}      
         
     ofPoint up(a.x, a.y-(l*3/4), a.z);
     ofPoint down(a.x, a.y+(l*3/4), a.z);
@@ -145,7 +146,6 @@ class CustomMode2: public FractalMode {
     ofDrawBox(d3, l/2, l/2, l*3/2);
     ofDrawBox(d4, l/2, l/2, l*3/2);
 
-    
 
     a.x += l/2;
     a.y += l/2;
@@ -183,8 +183,67 @@ class CustomMode2: public FractalMode {
 
     void draw4(ofPoint a, float l, int n){
 
+    if (n == 0) {return;}
+    else if (n == 1) {
+        ofSetColor(color1);
+        ofFill();
+        ofDrawBox(a, l);
+        return;
     }
 
+    else {
+        
+        float x = a.x;
+        float y = a.y;
+        float z = a.z;
+
+        ofPoint b(x+l/3, y, z+l/3);
+        ofPoint c(x, y+l/3, z+l/3);
+        ofPoint d(x-l/3, y, z+l/3);
+        ofPoint e(x, y-l/3, z+l/3);
+        ofPoint f(x+l/3, y+l/3, z+l/3);
+        ofPoint g(x-l/3, y+l/3, z+l/3);
+        ofPoint h(x+l/3, y-l/3, z+l/3);
+        ofPoint i(x-l/3, y-l/3, z+l/3);
+        
+        draw4(b, l/3, n-1);
+        draw4(c, l/3, n-1);
+        draw4(d, l/3, n-1);
+        draw4(e, l/3, n-1);
+        draw4(f, l/3, n-1);
+        draw4(g, l/3, n-1);
+        draw4(h, l/3, n-1);
+        draw4(i, l/3, n-1);
+
+        b.z -= l*2/3;
+        c.z -= l*2/3;
+        d.z -= l*2/3;
+        e.z -= l*2/3;
+        f.z -= l*2/3;
+        g.z -= l*2/3;
+        h.z -= l*2/3;
+        i.z -= l*2/3;
+
+        draw4(b, l/3, n-1);
+        draw4(c, l/3, n-1);
+        draw4(d, l/3, n-1);
+        draw4(e, l/3, n-1);
+        draw4(f, l/3, n-1);
+        draw4(g, l/3, n-1);
+        draw4(h, l/3, n-1);
+        draw4(i, l/3, n-1);
+
+        f.z+= l/3;
+        g.z+= l/3;
+        h.z+= l/3;
+        i.z+= l/3;
+
+        draw4(f, l/3, n-1);
+        draw4(g, l/3, n-1);
+        draw4(h, l/3, n-1);
+        draw4(i, l/3, n-1);
+    }
+}
 
     void draw5(ofPoint a, float l, int n) {
 
@@ -194,7 +253,6 @@ class CustomMode2: public FractalMode {
         float y = a.y;
         float z = a.z;
         ofFill();
-    
         if ((n+2)%3 == 0) {ofSetColor(color1);}
         else if ((n+1)%3 == 0) {ofSetColor(color2);}
         else {ofSetColor(color3);}   
@@ -210,7 +268,6 @@ class CustomMode2: public FractalMode {
         draw5(e, l/2, n-1);
 
     }
-
     void draw6(ofPoint a, float l, int n, vector<int> numbers){
 
     if (n == 0) {return;}

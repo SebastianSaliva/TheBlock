@@ -6,8 +6,10 @@
 class CustomMode1: public FractalMode {
 
     public:
-    
-    CustomMode1():FractalMode(){}
+    ofColor color1;
+    ofColor color2;
+    ofColor color3;
+    CustomMode1():FractalMode(){color1 = ofColor(255, 0, 0); color2 = ofColor(255, 0, 0); color3 = ofColor(255, 0, 0);}
 
     string getName() {return "Custom Mode 1";}
 
@@ -19,16 +21,16 @@ class CustomMode1: public FractalMode {
         ofFill();
         
         if ((n+2)%3 == 0) {ofSetColor(color1);}
-        else if ((n+1)%3 == 0) {ofSetColor(color1);}
-        else {ofSetColor(color1);}
+        else if ((n+1)%3 == 0) {ofSetColor(color2);}
+        else {ofSetColor(color3);}
 
         if (n==0){return;}
 
         ofDrawRectangle(x-l/2, y-l/2, l, l);
 
         if ((n+2)%3 == 0) {ofSetColor(color1.r, 0, 0);}
-        else if ((n+1)%3 == 0) {ofSetColor(0, color1.r, 0);}
-        else {ofSetColor(0, 0, color1.r);}
+        else if ((n+1)%3 == 0) {ofSetColor(0, color2.r, 0);}
+        else {ofSetColor(0, 0, color3.r);}
 
         ofDrawTriangle(x-l/2, y-l/2, x+l/2, y+l/2, x+l/2, y-l/2);
 
@@ -180,7 +182,7 @@ void draw5(ofPoint point, float l, int n) {
     draw5(pointtocall2, l/2, n-1);
 }
 
-void draw1(float x, float y, float l, int n, int colorLevel){
+void draw1(float x, float y, float l, int n){
 
     if (n == 0){return;}
     float dis = sqrt(pow(l,2) - pow(l/2, 2));
@@ -193,27 +195,27 @@ void draw1(float x, float y, float l, int n, int colorLevel){
     ofPoint g(x-dis, y+l/2);
     
     ofFill();
-    
-    ofSetColor(colorLevel-70, colorLevel-100, colorLevel-140);
+        if ((n+2)%3 == 0) {ofSetColor(color1);}
+        else if ((n+1)%3 == 0) {ofSetColor(color2);}
+        else {ofSetColor(color3);}
+    ofSetColor(color1);
     ofDrawTriangle(a, b, c);
     ofDrawTriangle(a, c, d);
 
-    ofSetColor(colorLevel-120, colorLevel-150, colorLevel-180);
+    ofSetColor(color2);
     ofDrawTriangle(a, d, e);
     ofDrawTriangle(a, e, f);
 
-    ofSetColor(colorLevel, colorLevel-90, colorLevel-100);
+    ofSetColor(color3);
     ofDrawTriangle(a, f, g);
     ofDrawTriangle(a, g, b);
     
-    draw1(c.x, c.y, l/2, n-1,colorLevel-10);
-    draw1(e.x, e.y, l/2, n-1,colorLevel-10);
-    draw1(g.x, g.y, l/2, n-1,colorLevel-10);
+    draw1(c.x, c.y, l/2, n-1);
+    draw1(e.x, e.y, l/2, n-1);
+    draw1(g.x, g.y, l/2, n-1);
 }
 
 
-void draw1(float x, float y, float l, int n) {
-    draw1(x, y, l, n, color1.r);
-}
+
 
 };
