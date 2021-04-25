@@ -20,17 +20,28 @@ class CustomMode1: public FractalMode {
     void draw6(float x, float y, float l, int n, string i) {
         ofFill();
         
-        if ((n+2)%3 == 0) {ofSetColor(color1);}
-        else if ((n+1)%3 == 0) {ofSetColor(color2);}
-        else {ofSetColor(color3);}
-
+        ofColor c1 = color1;
+        ofColor c2 = color2;
+        ofColor c3 = color3;
         if (n==0){return;}
+
+        c1.setBrightness(200);
+        c2.setBrightness(200);
+        c3.setBrightness(200);
+
+        if ((n+2)%3 == 0) {ofSetColor(c1);}
+        else if ((n+1)%3 == 0) {ofSetColor(c2);}
+        else {ofSetColor(c3);}
 
         ofDrawRectangle(x-l/2, y-l/2, l, l);
 
-        if ((n+2)%3 == 0) {ofSetColor(color1.r, 0, 0);}
-        else if ((n+1)%3 == 0) {ofSetColor(0, color2.r, 0);}
-        else {ofSetColor(0, 0, color3.r);}
+        c1.setBrightness(100);
+        c2.setBrightness(100);
+        c3.setBrightness(100);
+
+        if ((n+2)%3 == 0) {ofSetColor(c1);}
+        else if ((n+1)%3 == 0) {ofSetColor(c2);}
+        else {ofSetColor(c3);}
 
         ofDrawTriangle(x-l/2, y-l/2, x+l/2, y+l/2, x+l/2, y-l/2);
 
@@ -48,13 +59,20 @@ class CustomMode1: public FractalMode {
     }
 
 
-void draw2(float x, float y, float l, int n, int colorLevel){
+void draw2(float x, float y, float l, int n){
 
     if (n == 0){return;}
+    ofColor color;
+    if ((n+2)%3 == 0) {color = color1;}
+    else if ((n+1)%3 == 0) {color = color2;}
+    else {color = color3;}
 
-    ofColor first(colorLevel-50, 0, 0);
-    ofColor second(colorLevel-100, 0, 0);
-    ofColor third(colorLevel, 0, 0);
+    color.setBrightness(255);
+    ofColor first = color;
+    color.setBrightness(150);
+    ofColor second = color;
+    color.setBrightness(70);
+    ofColor third = color;
 
     float dis = sqrt(pow(l,2) - pow(l/2, 2));
     ofPoint a(x, y);
@@ -79,13 +97,9 @@ void draw2(float x, float y, float l, int n, int colorLevel){
     ofDrawTriangle(a, f, g);
     ofDrawTriangle(a, g, b);
     
-    draw2(a.x, a.y, l/1.5, n-1,colorLevel-20);
+    draw2(a.x, a.y, l/1.5, n-1);
 }
 
-
-void draw2(float x, float y, float l, int n) {
-    draw2(x, y, l, n, color1.r);
-}
 
 void draw3(ofPoint a, float l, int n) {
 

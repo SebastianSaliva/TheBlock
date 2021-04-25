@@ -51,15 +51,11 @@ class ofApp : public ofBaseApp{
 
 		ofxPanel colorpanel;
 
-		ofParameter <ofVec3f> color1;
-		ofParameter <ofVec3f> color2;
-		ofParameter <ofVec3f> color3;		 
-
 		ofxPanel mode1gui;
 
 		ofParameter <ofVec3f> uiPosition;
 		ofParameter <ofVec3f> fractalPosition;
-
+		ofParameter <ofVec2f> mode1Position;
 		ofParameter <float> fractalSize;
 		ofParameter <int> camDistance;
 		ofxButton resetcam;
@@ -79,7 +75,10 @@ class ofApp : public ofBaseApp{
 		ofxToggle f9;
 		ofxToggle f10;
 
-		vector<int> numbers;
+		ofParameter <ofColor> color1;
+		ofParameter <ofColor> color2;
+		ofParameter <ofColor> color3;
+		vector<int> numbers= {1, 0, 1, 0, 1, 0, 1, 0 , 1, 1, 0, 1, 0, 1, 0, 1, 0 , 1, 1, 0, 1, 0, 1, 0, 1, 0 , 1};
 
 		vector<int> sponge = {
 
