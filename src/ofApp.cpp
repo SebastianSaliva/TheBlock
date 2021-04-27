@@ -6,16 +6,19 @@ void ofApp::setup(){
 
     song.load("song.wav");
     song.setVolume(0.5);
+
+    camera.reset();
+    
     gui.setup("Main 3d Menu");
     
     gui.add(showLight.setup("Show light source", true));
-    gui.add(uiPosition.set("Light pos", ofVec3f(400, 400, 400), ofVec3f(-3000, -3000, -3000), ofVec3f(3000, 3000, 3000)));
+    gui.add(uiPosition.set("Light pos", ofVec3f(200, 200, 200), ofVec3f(-3000, -3000, -3000), ofVec3f(3000, 3000, 3000)));
 
     gui.add(fractalPosition.set("Fractal pos", ofVec3f(0, 0, 0), ofVec3f(-1500, -1500, -1500), ofVec3f(1500, 1500, 1500)));
     gui.add(fractalSize.set("size", 200, 0, 1000));
     
-    gui.add(ignoreCamScroll.setup("Ignore cam distance", true));
-    gui.add(camDistance.set("Cam distance", 1000, 0, 1500));
+    gui.add(ignoreCamScroll.setup("Ignore Cam Distance", true));
+    gui.add(camDistance.set("Cam Distance", 665, 0, 1500));
 
     gui.add(resetcam.setup("Reset cam"));
 
@@ -32,8 +35,6 @@ void ofApp::setup(){
     gui.add(f10.setup("3dFractal 10", false));
 
     fractal10gui.setup("Fractal 10 boxes");
-
-    fractal10gui.add(updateFractal10.setup("update"));
 
     fractal10gui.add(u1.setup(false));
     fractal10gui.add(u2.setup(false));
@@ -92,17 +93,19 @@ void ofApp::update(){
     /* The update method is called muliple times per second
     It's in charge of updating variables and the logic of our app */
     ofSetBackgroundColor(0,0,0);
+    
     if (!ignoreCamScroll) {camera.setDistance(camDistance);}
+    
+    if (resetcam){camera.reset();}   
+    
     light.setPosition(uiPosition->x, uiPosition->y, uiPosition->z);
-    if (resetcam){camera.reset();}
 
-    //if (updateFractal10) {
-        fractal10nums.clear();
-        for (ofxToggle tog: fractal10toggles) {
-            if (tog) {fractal10nums.push_back(1);} 
-            else {fractal10nums.push_back(0);}
-        }
-    //}
+    fractal10nums.clear();
+
+    for (ofxToggle tog: fractal10toggles) {
+        if (tog) {fractal10nums.push_back(1);} 
+        else {fractal10nums.push_back(0);}
+    }
 
     if(randomizeFractal) {
         numbers.clear();
@@ -110,7 +113,6 @@ void ofApp::update(){
         int n = ofRandom(2);
         numbers.push_back(n);
         }
-
     }
 }
 

@@ -182,7 +182,7 @@ class ofApp : public ofBaseApp{
 		ofxToggle o7;
 		ofxToggle o8;
 		ofxToggle o9;
-		vector<int> fractal10nums = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,};
+		vector<int> fractal10nums = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		vector<ofxToggle> fractal10toggles;
-
+	
 };
