@@ -282,6 +282,12 @@ void ofApp::draw(){
         mode1gui.draw();
 
     }
+
+    if (ModeVector[6]->getActive()){
+        FlowerOfLife* mode = dynamic_cast<FlowerOfLife*>(ModeVector[5]);
+        mode->draw(ofGetWidth()/2, ofGetHeight()/2, 100, 100, kochDepth);        
+    }
+
     colorpanel.draw();
 }
 
@@ -311,12 +317,18 @@ void ofApp::keyPressed(int key){
             ModeVector[5]->setActive(!ModeVector[5]->getActive());
             camera.reset();
             break;
+        case '7':
+            ModeVector[6]->setActive(!ModeVector[6]->getActive());
+            break;
 
         case '-':
 
             if (!animationIsActive){
                 if (depth > 0){
                 depth -= 1;}
+                if(kochDepth > 0){
+                    kochDepth -= 1;
+                }
             }
             break;
 
@@ -324,6 +336,7 @@ void ofApp::keyPressed(int key){
             
             if (!animationIsActive){
             depth += 1;
+            kochDepth += 1;
             }
             break;
 

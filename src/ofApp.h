@@ -12,7 +12,7 @@
 #include "KochSnowFlake.h"
 #include "CustomMode1.h"
 #include "CustomMode2.h"
-
+#include "FlowerOfLife.h"
 
 
 
@@ -22,7 +22,7 @@ class ofApp : public ofBaseApp{
 		void update();
 		void draw();
 		void drawOmega();
-		vector<FractalMode*> ModeVector{new DrawMode1(), new DrawMode2(), new DrawMode3(), new KochSnowFlake(), new CustomMode1(), new CustomMode2()};
+		vector<FractalMode*> ModeVector{new DrawMode1(), new DrawMode2(), new DrawMode3(), new KochSnowFlake(), new CustomMode1(), new CustomMode2(), new FlowerOfLife() };
 
 		void keyPressed(int key);
 		void keyReleased(int key);
