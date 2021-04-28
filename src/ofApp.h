@@ -35,10 +35,14 @@ class ofApp : public ofBaseApp{
 		void windowResized(int w, int h);
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
+		void angleGenerator();
 
 	private:
 		int depth = 5;
 		int kochDepth = 0;
+		int treeAngle = 0;
+		int tick = 0;
+		int coef = 60;
 		bool animationIsActive = false;
 		int framesSinceAnimationWasActive = 0;
 		int animSpeed = 1;

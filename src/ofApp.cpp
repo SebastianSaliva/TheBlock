@@ -114,6 +114,9 @@ void ofApp::update(){
         numbers.push_back(n);
         }
     }
+
+    angleGenerator();
+    tick++;
 }
 
 
@@ -149,8 +152,6 @@ void ofApp::draw(){
     /* The update method is called muliple times per second
     It's in charge of drawing all figures and text on screen */
 
-
-
     if (omegaAnimationIsPlaying) {drawOmega(); return;}
 
 
@@ -159,7 +160,10 @@ void ofApp::draw(){
 
 
     ofDrawBitmapString("Depth: "+ to_string(depth), ofGetWidth()/2 -20 , ofGetHeight()-10); //prints depth
-    
+    if(ModeVector[1]->getActive()){
+        ofDrawBitmapString("Press P to increase and O to decrease tree fractal speed", 0, ofGetHeight()-110);
+    }
+
     if (!animationIsActive){
     ofDrawBitmapString("Press space to activate Basic animation", 0, ofGetHeight()-75); //prints depth
     ofDrawBitmapString("Press 0 to activate custom animation", 0, ofGetHeight()-60); //prints depth
@@ -244,7 +248,7 @@ void ofApp::draw(){
         mode->color1 = color1;
         mode->color2 = color2;
         mode->color3 = color3;
-        mode->draw(200,depth, ofGetWidth()/2, ofGetHeight()-50, ofRandom(30, 70));
+        mode->draw(200,depth, ofGetWidth()/2, ofGetHeight()-50, treeAngle);
     }
 
     if (ModeVector[2]->getActive()){
@@ -337,6 +341,18 @@ void ofApp::keyPressed(int key){
             if (!animationIsActive){
             depth += 1;
             kochDepth += 1;
+            }
+            break;
+        case 'o':
+            
+            if (coef < 60){
+            coef += 10;
+            }
+            break;
+
+        case 'p':
+            if (coef > 10){
+            coef -= 10;
             }
             break;
 
@@ -441,4 +457,11 @@ void ofApp::gotMessage(ofMessage msg){
 //--------------------------------------------------------------
 void ofApp::dragEvent(ofDragInfo dragInfo){ 
 
+}
+
+//--------------------------------------------------------------
+void ofApp::angleGenerator(){
+    if(tick % coef == 0){
+        treeAngle = ofRandom(30, 70);
+    }
 }
