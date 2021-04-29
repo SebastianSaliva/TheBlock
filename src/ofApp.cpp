@@ -135,7 +135,9 @@ void ofApp::drawOmega(){
     if (depth == 8){depth = 0;}
 
     CustomMode1* mode = dynamic_cast<CustomMode1*>(ModeVector[4]);
-
+        mode->color1 = color1;
+        mode->color2 = color2;
+        mode->color3 = color3;
     if (omegaFrames<9) {
     mode->draw1(ofGetWidth()/2, ofGetHeight()/2, (ofGetHeight()/3-10) , depth);
     }
@@ -291,7 +293,7 @@ void ofApp::draw(){
     if (ModeVector[6]->getActive()){
         FlowerOfLife* mode = dynamic_cast<FlowerOfLife*>(ModeVector[5]);
         
-        mode->draw(ofGetWidth()/2, ofGetHeight()/2, 100, 100, kochDepth, colorful);        
+        mode->draw(ofGetWidth()/2, ofGetHeight()/2, 100, 100, depth, colorful);        
     }
 
     colorpanel.draw();
