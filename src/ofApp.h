@@ -36,6 +36,7 @@ class ofApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 		void angleGenerator();
+		void colorGenerator();
 
 	private:
 		int depth = 5;
@@ -46,6 +47,7 @@ class ofApp : public ofBaseApp{
 		bool animationIsActive = false;
 		int framesSinceAnimationWasActive = 0;
 		int animSpeed = 1;
+		ofColor colorful;
 
 		bool omegaAnimationIsPlaying = false;
 		int omegaFrames = 0;

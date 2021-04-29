@@ -116,6 +116,7 @@ void ofApp::update(){
     }
 
     angleGenerator();
+    colorGenerator();
     tick++;
 }
 
@@ -289,7 +290,8 @@ void ofApp::draw(){
 
     if (ModeVector[6]->getActive()){
         FlowerOfLife* mode = dynamic_cast<FlowerOfLife*>(ModeVector[5]);
-        mode->draw(ofGetWidth()/2, ofGetHeight()/2, 100, 100, kochDepth);        
+        
+        mode->draw(ofGetWidth()/2, ofGetHeight()/2, 100, 100, kochDepth, colorful);        
     }
 
     colorpanel.draw();
@@ -463,5 +465,14 @@ void ofApp::dragEvent(ofDragInfo dragInfo){
 void ofApp::angleGenerator(){
     if(tick % coef == 0){
         treeAngle = ofRandom(30, 70);
+    }
+}
+
+void ofApp::colorGenerator(){
+    if(tick == 0){
+        colorful = ofColor(255, 0, 0);
+    }
+    else if(tick % 15 == 0){
+        colorful = ofColor(ofRandom(255), ofRandom(255), ofRandom(255));
     }
 }

@@ -14,13 +14,13 @@ class FlowerOfLife : public FractalMode{
     
     void draw(){}
 
-    void draw(double x1, double y1, double size, double distance, int n){
-        if(n == 1){
+    void draw(double x1, double y1, double size, double distance, int n, ofColor color){
         ofNoFill();
+        ofSetColor(color);
+        if(n == 1){
         ofDrawCircle(x1, y1, size);
         }
         else if(n>=2){
-            ofDrawCircle(x1, y1, size);
             double x2, y2, x3, y3, x4, y4, x5, y5 , x6, y6, x7, y7;
             double angle30 = 0.523599;
             x2 = x1 + (distance*cos(angle30));
@@ -36,12 +36,12 @@ class FlowerOfLife : public FractalMode{
             x7 = x1 + (distance*cos(11*angle30));
             y7 = y1 + (distance*sin(11*angle30));
 
-            this->draw(x2, y2, size, distance, n-1);
-            this->draw(x3, y3, size, distance, n-1);
-            this->draw(x4, y4, size, distance, n-1);
-            this->draw(x5, y5, size, distance, n-1);
-            this->draw(x6, y6, size, distance, n-1);
-            this->draw(x7, y7, size, distance, n-1);
+            this->draw(x2, y2, size, distance, n-1, color);
+            this->draw(x3, y3, size, distance, n-1, color);
+            this->draw(x4, y4, size, distance, n-1, color);
+            this->draw(x5, y5, size, distance, n-1, color);
+            this->draw(x6, y6, size, distance, n-1, color);
+            this->draw(x7, y7, size, distance, n-1, color);
 
 
         }
