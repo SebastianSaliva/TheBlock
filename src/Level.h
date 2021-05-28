@@ -15,15 +15,23 @@ Player* player2;
 ofPoint spawn1;
 ofPoint spawn2;
 
-vector<Object*> spikes;
-vector<Object*> spikesButDeadlier;
-//vector<Object*> deathItSelf;
+vector <Object*> bounds;
+vector <Object*> boundsForP1;
+vector <Object*> boundsForP2;
 
-vector<ActivatorObject*> wallSwitch;
+vector <Object*> boxes;
+
+
+vector<Object*> spikes;
+vector<Object*> deadlySpikes;
+
+vector<ActivatorObject*> wallSwitches;
 vector<ActivatableObject*> walls;
 
-vector <Object*> bounds;
-Object* endOfLevel = new Object(0, 0, 50, 50);
+vector<ActivatorObject*> holdDownWallSwitches;
+vector<ActivatableObject*> holdDownWalls;
+
+vector<Object*> endOfLevel;
 
 bool p1tryToMoveUp = false;
 bool p1tryToMoveDown = false;
@@ -36,9 +44,13 @@ bool p2tryToMoveRight = false;
 
 bool isPlaying = false;
 int finished = 0;
-        
-Level(){};
 
+Level(){
+
+player1 = new Player(0, 0, 50);
+player2 = new Player(-50, -50, 50);
+
+};
 
 Level(vector<Object*> initialBounds, Player* player_1, Player* player_2){
     player1 = player_1;
@@ -48,166 +60,175 @@ Level(vector<Object*> initialBounds, Player* player_1, Player* player_2){
     spawn2 = player2->pos;
 };
 
+bool tryToMoveBox(int xMove, int yMove, Object*& box, Player* player){
+
+        box->x += xMove;
+        box->y += yMove;
+        box->pos = ofPoint(box->x, box->y);
+
+        vector<vector<Object*>> allBounds = {bounds, spikes, deadlySpikes};
+
+        for (vector<Object*> bound: allBounds){
+            for (Object* obj: bound) {
+                if (box->collides(obj->getBounds())){
+                    box->x -= xMove;
+                    box->y -= yMove;
+                    box->pos = ofPoint(box->x, box->y);
+                    return false;
+                    }
+            }
+        }
+        
+        Player* otherPlayer;
+        if (player == player1){otherPlayer = player2;}
+        else {otherPlayer = player1;}
+
+        for (ActivatableObject* w: walls){ 
+            if (w->active){
+                if (box->collides(w->getBounds())){              
+                box->x -= xMove;
+                box->y -= yMove;
+                box->pos = ofPoint(box->x, box->y);
+                return false;
+                }
+            }
+        }
+
+        if (box->collides(otherPlayer->getBounds())){
+                box->x -= xMove;
+                box->y -= yMove;
+                box->pos = ofPoint(box->x, box->y);
+                return false;
+        }
+
+        for (Object* box2: boxes) {
+            
+            if (box == box2) {continue;}
+
+            if (box->collides(box2->getBounds())){
+                box->x -= xMove;
+                box->y -= yMove;
+                box->pos = ofPoint(box->x, box->y);
+                return false;
+                }
+        }
+        return true;
+}
+
+
+void movePlayerHelper(int xMove, int yMove,  Player*& player){
+
+        player->x += xMove;
+        player->y += yMove;
+        player->pos = ofPoint(player->x, player->y);
+  
+
+        for (Object* obj: bounds) {
+            if (player->collides(obj->getBounds())){
+                player->x -= xMove;
+                player->y -= yMove;
+                player->pos = ofPoint(player->x, player->y);
+                return;
+                }
+        }
+        
+        Player* otherPlayer; vector<Object*> playerBounds;
+        if (player == player1){otherPlayer = player2; playerBounds = boundsForP2;}
+        else {otherPlayer = player1; playerBounds = boundsForP1;}
+
+        for (Object* obj: playerBounds) {
+            if (player->collides(obj->getBounds())){
+                player->x -= xMove;
+                player->y -= yMove;
+                player->pos = ofPoint(player->x, player->y);
+                return;
+                }
+        }
+
+        for (ActivatableObject* w: walls){ 
+            if (w->active){
+                if (player->collides(w->getBounds())){              
+                player->x -= xMove;
+                player->y -= yMove;
+                player->pos = ofPoint(player->x, player->y);
+                return;
+                }
+            }
+        }
+
+        if (player->collides(otherPlayer->getBounds())){
+                player->x -= xMove;
+                player->y -= yMove;
+                player->pos = ofPoint(player->x, player->y);
+                return;
+        }
+
+        for (Object* box: boxes) {
+            if (player->collides(box->getBounds())){
+                
+                bool boxCanMove = tryToMoveBox(xMove, yMove, box, player);
+
+                if (!boxCanMove){
+                    player->x -= xMove;
+                    player->y -= yMove;
+                    player->pos = ofPoint(player->x, player->y);
+                    return;
+                }
+            }
+        }
+
+
+}
+
 void movePlayer1(){
     if (p1tryToMoveUp){
-        player1->y -= player1->speed; player1->pos.y -= player1->speed;
-        bool collideWithBounds = false;
-        
-        for (Object* obj: bounds) {
-            if (player1->collides(obj->getBounds()) || player1->collides(player2->getBounds()))
-            {player1->y += player1->speed; player1->pos.y += player1->speed; collideWithBounds = true; break;}
-        }
-
-        if (!collideWithBounds){
-            for (ActivatableObject* w: walls){ 
-                if (w->active){
-                    if (player1->collides(w->getBounds()))
-                    {player1->y += player1->speed; player1->pos.y += player1->speed; break;}
-                }
-            }
-        }
+        movePlayerHelper(0, -player1->speed, player1);
     }
-
-    if (p1tryToMoveDown) {
-        player1->y += player1->speed; player1->pos.y += player1->speed;
-        bool collideWithBounds = false;
-
-        for (Object* obj: bounds) {
-            if (player1->collides(obj->getBounds()) || player1->collides(player2->getBounds()))
-            {player1->y -= player1->speed; player1->pos.y -= player1->speed; collideWithBounds = true; break;} 
-            }
-
-        if (!collideWithBounds){
-            for (ActivatableObject* w: walls){ 
-                if (w->active){
-                    if (player1->collides(w->getBounds()))
-                    {player1->y -= player1->speed; player1->pos.y -= player1->speed; break;}
-                }
-            }
-        }
+    if (p1tryToMoveDown){
+        movePlayerHelper(0, player1->speed, player1);
     }
-
-    if (p1tryToMoveLeft) {
-        player1->x -= player1->speed; player1->pos.x -= player1->speed;
-        bool collideWithBounds = false;
-        for (Object* obj: bounds) {
-            if (player1->collides(obj->getBounds()) || player1->collides(player2->getBounds()))
-            {player1->x += player1->speed; player1->pos.x += player1->speed; collideWithBounds = true; break;}
-        }
-        if (!collideWithBounds){
-            for (ActivatableObject* w: walls){ 
-                if (w->active){
-                    if (player1->collides(w->getBounds()))
-                    {player1->x += player1->speed; player1->pos.x += player1->speed; break;}
-                }
-            }
-        }
+    if (p1tryToMoveRight){
+        movePlayerHelper(player1->speed, 0, player1);
     }
-
-    if (p1tryToMoveRight) {
-        player1->x += player1->speed; player1->pos.x += player1->speed;
-        bool collideWithBounds = false;
-        for (Object* obj: bounds) {
-            if (player1->collides(obj->getBounds()) || player1->collides(player2->getBounds()))
-            {player1->x -= player1->speed; player1->pos.x -= player1->speed; collideWithBounds = true; break;}
-        }
-
-        if (!collideWithBounds){
-            for (ActivatableObject* w: walls){ 
-                if (w->active){
-                    if (player1->collides(w->getBounds()))
-                    {player1->x -= player1->speed; player1->pos.x -= player1->speed; break;}
-                }
-            }
-        }
+    if (p1tryToMoveLeft){
+        movePlayerHelper(-player1->speed, 0, player1);
     }
 }
 
 void movePlayer2(){
     if (p2tryToMoveUp){
-        player2->y -= player2->speed; player2->pos.y -= player2->speed;
-        bool collideWithBounds = false;
-        
-        for (Object* obj: bounds) {
-            if (player2->collides(obj->getBounds()) || player2->collides(player1->getBounds()))
-            {player2->y += player2->speed; player2->pos.y += player2->speed; collideWithBounds = true; break;}
-        }
-
-        if (!collideWithBounds){
-            for (ActivatableObject* w: walls){ 
-                if (w->active){
-                    if (player2->collides(w->getBounds()))
-                    {player2->y += player2->speed; player2->pos.y += player2->speed; break;}
-                }
-            }
-        }
+        movePlayerHelper(0, -player2->speed, player2);
     }
-
-    if (p2tryToMoveDown) {
-        player2->y += player2->speed; player2->pos.y += player2->speed;
-        bool collideWithBounds = false;
-
-        for (Object* obj: bounds) {
-            if (player2->collides(obj->getBounds()) || player2->collides(player1->getBounds()))
-            {player2->y -= player2->speed; player2->pos.y -= player2->speed; collideWithBounds = true; break;} 
-            }
-
-        if (!collideWithBounds){
-            for (ActivatableObject* w: walls){ 
-                if (w->active){
-                    if (player2->collides(w->getBounds()))
-                    {player2->y -= player2->speed; player2->pos.y -= player2->speed; break;}
-                }
-            }
-        }
+    if (p2tryToMoveDown){
+        movePlayerHelper(0, player2->speed, player2);
     }
-
-    if (p2tryToMoveLeft) {
-        player2->x -= player2->speed; player2->pos.x -= player2->speed;
-        bool collideWithBounds = false;
-        for (Object* obj: bounds) {
-            if (player2->collides(obj->getBounds()) || player2->collides(player1->getBounds()))
-            {player2->x += player2->speed; player2->pos.x += player2->speed; collideWithBounds = true; break;}
-        }
-        if (!collideWithBounds){
-            for (ActivatableObject* w: walls){ 
-                if (w->active){
-                    if (player2->collides(w->getBounds()))
-                    {player2->x += player2->speed; player2->pos.x += player2->speed; break;}
-                }
-            }
-        }
+    if (p2tryToMoveRight){
+        movePlayerHelper(player2->speed, 0, player2);
     }
-
-    if (p2tryToMoveRight) {
-        player2->x += player2->speed; player2->pos.x += player2->speed;
-        bool collideWithBounds = false;
-        for (Object* obj: bounds) {
-            if (player2->collides(obj->getBounds()) || player2->collides(player1->getBounds()))
-            {player2->x -= player2->speed; player2->pos.x -= player2->speed; collideWithBounds = true; break;}
-        }
-
-        if (!collideWithBounds){
-            for (ActivatableObject* w: walls){ 
-                if (w->active){
-                    if (player2->collides(w->getBounds()))
-                    {player2->x -= player2->speed; player2->pos.x -= player2->speed; break;}
-                }
-            }
-        }
+    if (p2tryToMoveLeft){
+        movePlayerHelper(-player2->speed, 0, player2);
     }
 }
 
 void RespawnP1(){player1->pos = spawn1; player1->x = spawn1.x; player1->y = spawn1.y;}
+
 void RespawnP2(){player2->pos = spawn2; player2->x = spawn2.x; player2->y = spawn2.y;}
+
 void Respawn(){RespawnP1(); RespawnP2();}
 
 void keyPressed(int key){
     // This method is called automatically when any key is pressed
     switch(key){
+
         case ' ':
-            player1->speed = 5;
+            player1->size = player1->size/2;
+            player2->size = player2->size/2;        
             break;
+        case 'x':
+            player1->size = player1->size*2;
+            player2->size = player2->size*2;
+            break;
+
         case 'w':
             p1tryToMoveUp = true;
             break;
@@ -222,34 +243,33 @@ void keyPressed(int key){
             p1tryToMoveLeft = true;
             break;
 
-        case '7':
-            player2->speed = 5;
-            break;
-        case '8':
+        case 't':
             p2tryToMoveUp = true;
             break;
-        case '2':
+        case 'g':
             p2tryToMoveDown = true;
             break;
-        case '6':
+        case 'h':
             p2tryToMoveRight = true;
             break;    
         
-        case '4':
+        case 'f':
             p2tryToMoveLeft = true;
             break;
 
         case 'e':
-            for (ActivatorObject* sw: wallSwitch){
+            for (ActivatorObject* sw: wallSwitches){
                 if (sw->p1canTurnOn) {
                 sw->pressed = true;
+                return;
                 }            
             }
             break;
         case 'i':
-            for (ActivatorObject* sw: wallSwitch){
+            for (ActivatorObject* sw: wallSwitches){
                 if (sw->p2canTurnOn) {
                 sw->pressed = true;
+                return;
                 }            
             }
             break;
@@ -261,9 +281,6 @@ void keyReleased(int key){
     switch(key){
 
 
-        case ' ':
-            player1->speed = 1;
-            break;
         case 'w':
             p1tryToMoveUp = false;
             break;
@@ -273,43 +290,42 @@ void keyReleased(int key){
         case 'd':
             p1tryToMoveRight = false;
             break;
-
         case 'a':
             p1tryToMoveLeft = false;
             break;
-        
-        case '7':
-            player2->speed = 1;
-            break;
-        case '8':
+        case 't':
             p2tryToMoveUp = false;
             break;
-        case '2':
+        case 'g':
             p2tryToMoveDown = false;
             break;
-        case '6':
+        case 'h':
             p2tryToMoveRight = false;
             break;    
         
-        case '4':
+        case 'f':
             p2tryToMoveLeft = false;
             break;
     }
 }
 
 void update(){
-
-    if (player1->collides(endOfLevel->getBounds()) && player2->collides(endOfLevel->getBounds())) {finished = 1;} //checks that both players are on end pad
+    bool p1AtEnd = false;
+    bool p2AtEnd = false;
+    for (Object* end: endOfLevel){
+        if (player1->collides(end->getBounds())){p1AtEnd = true;}
+        if (player2->collides(end->getBounds())){p2AtEnd = true;}
+    }
+    if (p1AtEnd && p2AtEnd) {finished = 1; return;} //checks that both players are on end pad
 
     for (Object* spike: spikes) {
         if (player1->collides(spike->getBounds())){RespawnP1();}; 
         if (player2->collides(spike->getBounds())){RespawnP2();};
     } //checks collisions with spikes
 
-    for (Object* spike: spikesButDeadlier) {
+    for (Object* spike: deadlySpikes) {
         if (player1->collides(spike->getBounds()) || player2->collides(spike->getBounds())){Respawn();};
     } //checks collisions with spikes that kill both
-
 
     for (ActivatableObject* w: walls){         
         if (w->active){
@@ -321,14 +337,14 @@ void update(){
         }}
     }//checks to see if a player is inside a wall
 
-    for (ActivatorObject* sw: wallSwitch){
+    for (ActivatorObject* sw: wallSwitches){
         if (sw->framesSinceUsed == 0){
             if (sw->pressed) {
-                for (ActivatorObject* sw: wallSwitch){ sw->framesSinceUsed = 60; sw->active = !sw->active; sw->pressed = false;}
+                for (ActivatorObject* sw: wallSwitches){ sw->framesSinceUsed = 60; sw->active = false; sw->pressed = false; sw->p1canTurnOn = false; sw->p2canTurnOn = false;}
                 for (ActivatableObject* wall: walls){wall->active = !wall->active;}
                 sw->p1canTurnOn = false;
                 sw->p2canTurnOn = false;
-                continue;
+                break;
             }
             if (player1->collides(sw->getBounds())){
                 sw->p1canTurnOn = true;
@@ -342,48 +358,66 @@ void update(){
         } 
         else {sw->framesSinceUsed--;}
     }//checks to see if wall switches can be turned on by either player
-
     movePlayer1();
     movePlayer2();
 }
+		ofColor player1Color = ofColor(0, 255, 0);
+		ofColor player2Color = ofColor(0, 0, 255);
+        ofColor endOfLevelColor = ofColor(0, 255, 255);
+		ofColor boundsColor = ofColor(255);
+		ofColor boundsForP1Color = ofColor(200, 255, 200);
+		ofColor boundsForP2Color = ofColor(200, 200, 255);
+		ofColor spikesColor = ofColor(255,0,0);
+     	ofColor deadlySpikesColor = ofColor(100,0,0);
+		ofColor wallsOnColor = ofColor(150);
+		ofColor wallsOffColor = ofColor(75);
+		ofColor wallSwitchColorIdle = ofColor(10, 125, 100);
+		ofColor wallSwitchColorCanPress = ofColor(0, 255, 200);
+        ofColor boxesColor = ofColor(75, 50, 25);
 
 void draw(){
     ofSetBackgroundColor(0);
-    endOfLevel->render(ofColor::gold); 
 
-    for (Object* obj: bounds){obj->render();}
+    for (Object* end: endOfLevel) {end->render(endOfLevelColor);} //renders end of level
+
+    for (Object* bound: bounds){bound->render();} //renders bounds
+    for (Object* bound: boundsForP1){bound->render(boundsForP1Color);} //renders bounds for p1
+    for (Object* bound: boundsForP2){bound->render(boundsForP2Color);} //renders bounds for p2
 
 
 
     bool eDrawn = false;
     bool iDrawn = false;
-    bool drawWalls = false;
 
     ofSetColor(ofColor::green);
-    for (ActivatorObject* sw: wallSwitch){
-        if(!eDrawn){if (sw->p1canTurnOn){
+    for (ActivatorObject* sw: wallSwitches){
+        if(!eDrawn && sw->p1canTurnOn){
             ofDrawBitmapString("press e to interact", -ofGetWidth()/2 + 2, 0); eDrawn = true;
-        }}
-        if(!iDrawn){if (sw->p2canTurnOn){
-            ofDrawBitmapString("press i to interact", ofGetWidth()/2 -100, 0); iDrawn = true;
-        }}
-        if (sw->p1canTurnOn || sw->p2canTurnOn){sw->render(ofColor::green);}
-        else {sw->render(ofColor::darkGreen);}
-              
+        }
+        if(!iDrawn && sw->p2canTurnOn){
+            ofDrawBitmapString("press i to interact", ofGetWidth()/2 -200, 0); iDrawn = true;
+        }
     }
+
+    if (eDrawn || iDrawn) {for (ActivatorObject* sw: wallSwitches){sw->render(wallSwitchColorCanPress);}}
+    else {for (ActivatorObject* sw: wallSwitches){sw->render(wallSwitchColorIdle);}}
 
     for (ActivatableObject* wall: walls){
-        if (wall->active) {wall->render(ofColor::blueSteel);}
-        else {wall->render(ofColor::darkGray);}
+        if (wall->active) {wall->render(wallsOnColor);}
+        else {wall->render(wallsOffColor);}
     }
-    
 
-   for (Object* spk: spikes) {spk->render(ofColor::red);}
-   for (Object* spk: spikesButDeadlier) {spk->render(ofColor::darkRed);}
+   for (Object* spk: spikes) {spk->render(spikesColor);}
+   for (Object* spk: deadlySpikes) {spk->render(deadlySpikesColor);}
 
-   player1->render(ofColor::lime);
-   player2->render(ofColor::cyan);
-}
+    for (Object* box: boxes){box->render(boxesColor);}
+
+
+
+   player1->render(player1Color);
+   player2->render(player2Color);
+
+   }
 
 
 

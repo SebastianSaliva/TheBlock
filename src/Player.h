@@ -27,7 +27,7 @@ class Player{
             x = 0;
             y = 0;
             health = 100;
-            speed = 1;
+            speed = 2;
             pos = ofPoint(0, 0);
             size = 50;
         };
@@ -35,7 +35,7 @@ class Player{
             x = xPos;
             y = yPos;
             health = 100;
-            speed = 1;
+            speed = 2;
             pos = ofPoint(x, y);
             size = size_;
         };

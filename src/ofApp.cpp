@@ -23,54 +23,170 @@ vector<Object*> ofApp::makeSquareBounds(int size){
         return bounds;
 }
 
+Level ofApp::makeBuildingLevel(){
+    
+    Level levelInCreation = Level();
 
+    for (int i = 0; i < coords.size(); i++) {
+
+            ofColor currentPixel = colorsForCoords[i];
+            int x = coords[i].x; 
+            int y = coords[i].y;
+
+            if (currentPixel == ofColor(0)){continue;}
+
+            else if (currentPixel == boundsColor){ 
+                levelInCreation.bounds.push_back(new Object(x*scale, y*scale, scale, scale));
+            }
+            else if (currentPixel == player1Color){
+                levelInCreation.player1 = new Player(x*scale, y*scale, scale);
+                levelInCreation.spawn1 = levelInCreation.player1->pos;
+            }
+            else if (currentPixel == player2Color){
+                levelInCreation.player2 = new Player(x*scale, y*scale, scale);
+                levelInCreation.spawn2 = levelInCreation.player2->pos;
+            }
+            else if (currentPixel == spikesColor){
+                levelInCreation.spikes.push_back(new Object(x*scale, y*scale, scale, scale));
+            }
+            else if (currentPixel == deadlySpikesColor){
+                levelInCreation.deadlySpikes.push_back(new Object(x*scale, y*scale, scale, scale));
+            }
+            else if (currentPixel == endOfLevelColor){
+                levelInCreation.endOfLevel.push_back(new Object(x*scale, y*scale, scale, scale));
+            }
+            else if (currentPixel == wallsOnColor){
+                levelInCreation.walls.push_back(new ActivatableObject(x*scale, y*scale, scale, scale, true));
+            } 
+            else if (currentPixel == wallsOffColor){
+                levelInCreation.walls.push_back(new ActivatableObject(x*scale, y*scale, scale, scale, false));
+            }
+            else if (currentPixel == wallSwitchColorIdle){
+                levelInCreation.wallSwitches.push_back(new ActivatorObject(x*scale, y*scale, scale, scale));
+            }
+            else if (currentPixel == boundsForP1Color){ 
+                levelInCreation.boundsForP1.push_back(new Object(x*scale, y*scale, scale, scale));
+            }
+            else if (currentPixel == boundsForP2Color){ 
+                levelInCreation.boundsForP2.push_back(new Object(x*scale, y*scale, scale, scale));
+            }
+            else if (currentPixel == boxesColor){ 
+                levelInCreation.boxes.push_back(new Object(x*scale, y*scale, scale, scale));
+            }
+
+
+    }
+    return levelInCreation;
+}
+
+Level ofApp::makeLevel(string levelName){
+
+    // colors 
+    // player1Color = ofColor(0, 255, 0);
+    // player2Color = ofColor(0, 0, 255);
+    // endOfLevelColor = ofColor(0, 255, 255);
+    // boundsColor = ofColor(255);
+    // boundsForP1Color = ofColor(200, 255, 200);
+    // boundsForP2Color = ofColor(200, 200, 255);
+    // spikesColor = ofColor(255,0,0);
+    // deadlySpikesColor = ofColor(100,0,0);
+    // wallsOnColor = ofColor(150);
+    // wallsOffColor = ofColor(75);
+    // wallSwitchColorIdle = ofColor(10, 125, 100);
+    // wallSwitchColorCanPress = ofColor(0, 255, 200);
+    // boxesColor = ofColor(75, 50, 25);
+
+
+
+    ofImage levelpicture;
+    levelpicture.load(levelName);
+
+    Level levelInCreation;
+	ofPixels pixels = levelpicture.getPixels();    
+    for (int i = 0; i < levelpicture.getWidth(); i++) {
+        for (int j = 0; j < levelpicture.getHeight(); j++) {
+            ofColor currentPixel = pixels.getColor(i, j);
+            
+            int x = i-levelpicture.getWidth()/2;
+            int y = j-levelpicture.getHeight()/2;
+
+            if (currentPixel == ofColor(0)){continue;}
+
+            else if (currentPixel == boundsColor){ 
+                levelInCreation.bounds.push_back(new Object(x*scale, y*scale, scale, scale));
+            }
+            else if (currentPixel == player1Color){
+                levelInCreation.player1 = new Player(x*scale, y*scale, scale);
+                levelInCreation.spawn1 = levelInCreation.player1->pos;
+            }
+            else if (currentPixel == player2Color){
+                levelInCreation.player2 = new Player(x*scale, y*scale, scale);
+                levelInCreation.spawn2 = levelInCreation.player2->pos;
+            }
+            else if (currentPixel == spikesColor){
+                levelInCreation.spikes.push_back(new Object(x*scale, y*scale, scale, scale));
+            }
+            else if (currentPixel == deadlySpikesColor){
+                levelInCreation.deadlySpikes.push_back(new Object(x*scale, y*scale, scale, scale));
+            }
+            else if (currentPixel == endOfLevelColor){
+                levelInCreation.endOfLevel.push_back(new Object(x*scale, y*scale, scale, scale));
+            }
+            else if (currentPixel == wallsOnColor){
+                levelInCreation.walls.push_back(new ActivatableObject(x*scale, y*scale, scale, scale, true));
+            } 
+            else if (currentPixel == wallsOffColor){
+                levelInCreation.walls.push_back(new ActivatableObject(x*scale, y*scale, scale, scale, false));
+            }
+            else if (currentPixel == wallSwitchColorIdle){
+                levelInCreation.wallSwitches.push_back(new ActivatorObject(x*scale, y*scale, scale, scale));
+            }
+            else if (currentPixel == boundsForP1Color){ 
+                levelInCreation.boundsForP1.push_back(new Object(x*scale, y*scale, scale, scale));
+            }
+            else if (currentPixel == boundsForP2Color){ 
+                levelInCreation.boundsForP2.push_back(new Object(x*scale, y*scale, scale, scale));
+            }
+            else if (currentPixel == boxesColor){ 
+                levelInCreation.boxes.push_back(new Object(x*scale, y*scale, scale, scale));
+            }
+
+        }}
+    levelInCreation.spawn1 = levelInCreation.player1->pos;
+    levelInCreation.spawn2 = levelInCreation.player2->pos;
+
+    return levelInCreation;  
+};
 
 void ofApp::setup(){
 
     ofSetBackgroundColor(ofColor::black);
-
-        level1 = Level(makeSquareBounds(5), new Player(-scale*4, -scale*4, scale), new Player(scale*3, -scale*4, scale));
-
-        level1.endOfLevel = new Object(-scale, scale*3, scale*2, scale*2);
-
-        level1.spikes.push_back(new Object(-5*scale, -1*scale, 4*scale, 1*scale));
-
-        level1.spikesButDeadlier.push_back(new Object(scale, -1*scale, 4*scale, 1*scale));
-
-        level1.walls.push_back(new ActivatableObject(scale, -5*scale, scale, scale*4, false));
-        level1.walls.push_back(new ActivatableObject(-scale, -scale, scale*2, scale, true));
-        
-        level1.wallSwitch.push_back(new ActivatorObject(4*scale, -2*scale, scale, scale));
-        level1.wallSwitch.push_back(new ActivatorObject(-1*scale, -5*scale, 2*scale, scale));
-
-
-
-
-
-    currentLevel = level1;
+    currentLevel = makeLevel(levelNames[levelId]);
     currentLevel.isPlaying = true;
 
 }
 
 
-
-
-
 //--------------------------------------------------------------
 void ofApp::update(){
     
-    if (coords.size() == 4) { 
-        coords.clear();
-        rects.push_back(ofRectangle(coords[0]- ofGetWidth()/2, coords[1]- ofGetHeight()/2, coords[2] - coords[0], coords[3] - coords[1]));
+    if (building) { 
+        
+        if(buildingLevel.isPlaying) {buildingLevel.update();}
+        return;
+
     }
 
     if (currentLevel.isPlaying) {
         currentLevel.update();
-        if (currentLevel.finished) {currentLevel.isPlaying = false;}
+        if (currentLevel.finished) {
+            levelId++; if (levelId == levelNames.size()) {levelId = 0;}
+            currentLevel = makeLevel(levelNames[levelId]);
+            }
         return;
     }
     else{
-    ofSetBackgroundColor(ofColor::green);
+        currentLevel.isPlaying = true;
     }
 
 
@@ -83,15 +199,70 @@ void ofApp::draw(){
     ofSetColor(255);
 
     if (building) { 
-        ofSetColor(ofColor::pink);
-        int i = 10;
-        for (ofRectangle rect: rects){      
-            ofDrawRectangle(rect);
-            ofDrawBitmapString("x: " + to_string(rect.x) + ". y: " + to_string(rect.y), 5, i);
-            ofDrawBitmapString("w: " + to_string(rect.width) + ". h: " + to_string(rect.height), 5, i + 15);
-            i+= 40;
+        
+        if (buildingLevel.isPlaying) {
+            ofSetColor(ofColor::blue);
+            ofDrawRectangle(500, 500, 10, 10);
+            buildingLevel.draw(); return;}
+        else {
+
+            for (int i = 0; i < coords.size(); i++){
+                ofSetColor(colorsForCoords[i]);
+                ofDrawRectangle(coords[i].x*scale, coords[i].y*scale, scale, scale);
+                
+            }
+
+
         }
+
+
+
+        int count = -10;
+        while (count <= 10){
+        ofSetColor(255);            
+        if (count == 0) {ofSetColor(ofColor::red);}
+
+        ofDrawLine(-1000, count*scale, 1000, count*scale);
+        ofDrawLine(count*scale, -1000, count*scale, 1000);
+        count++;   
+        }
+
+        ofSetColor(255);
+        ofDrawRectangle(-10*scale, -6*scale, scale/2, scale/2);
+        ofSetColor(0);
+        ofDrawRectangle(-10*scale+2, -6*scale+2, scale/2 -4, scale/2 -4);
+
+        ofSetColor(boundsColor);
+        ofDrawRectangle(-10*scale, -5*scale, scale/2, scale/2);
+        ofSetColor(player1Color);
+        ofDrawRectangle(-10*scale, -4*scale, scale/2, scale/2);
+        ofSetColor(player2Color);
+        ofDrawRectangle(-10*scale, -3*scale, scale/2, scale/2);
+        ofSetColor(spikesColor);
+        ofDrawRectangle(-10*scale, -2*scale, scale/2, scale/2);
+        ofSetColor(deadlySpikesColor);
+        ofDrawRectangle(-10*scale, -1*scale, scale/2, scale/2);
+        ofSetColor(boundsForP1Color);
+        ofDrawRectangle(-10*scale, 0*scale, scale/2, scale/2);
+        ofSetColor(boundsForP2Color);
+        ofDrawRectangle(-10*scale, 1*scale, scale/2, scale/2);
+        ofSetColor(wallsOnColor);
+        ofDrawRectangle(-10*scale, 2*scale, scale/2, scale/2);
+        ofSetColor(wallsOffColor);
+        ofDrawRectangle(-10*scale, 3*scale, scale/2, scale/2);
+        ofSetColor(wallSwitchColorIdle);
+        ofDrawRectangle(-10*scale, 4*scale, scale/2, scale/2);
+        ofSetColor(boxesColor);
+        ofDrawRectangle(-10*scale, 5*scale, scale/2, scale/2);
+        ofSetColor(endOfLevelColor);
+        ofDrawRectangle(-10*scale, 6*scale, scale/2, scale/2);
+
+
+
+
+
         return;
+
     }
 
     if (currentLevel.isPlaying) {
@@ -104,15 +275,36 @@ void ofApp::draw(){
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
-    
+
     if (key == 'b') {building = !building; return;}
-    if (key == 'n') {rects.clear(); coords.clear(); return;} 
+    
+    if (building) {    
+        if (key == '/') {buildingLevel.isPlaying = !buildingLevel.isPlaying;}
+        if (key == '[') {buildingLevel = makeBuildingLevel();}
+        if (key == ']') {coords.clear(); colorsForCoords.clear(); buildingLevel = Level(); return;} 
+        if (key == 'u') {coords.pop_back(); colorsForCoords.pop_back();}
+        if (buildingLevel.isPlaying){buildingLevel.keyPressed(key);}
+        return;
+    }
+    
+    if (key == 'r') {currentLevel = makeLevel(levelNames[levelId]);}
+    if (key == '0') {
+            levelId++; if (levelId == levelNames.size()) {levelId = 0;}
+            currentLevel = makeLevel(levelNames[levelId]);
+    }
     currentLevel.keyPressed(key);
 
 }
 
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key){
+    
+    if (building){
+        if (buildingLevel.isPlaying){buildingLevel.keyReleased(key);}
+        return;
+    }
+    
+    
     currentLevel.keyReleased(key);
 }
 
@@ -129,10 +321,81 @@ void ofApp::mouseDragged(int x, int y, int button){
 
 //--------------------------------------------------------------
 void ofApp::mousePressed(int x, int y, int button){
+
+
 if (building) {
-    coords.push_back(x);
-    coords.push_back(y);
-}
+
+    x -= ofGetWidth()/2;
+    y -= ofGetHeight()/2;
+    
+    if(-10*scale + scale/2 >= x && x >= -10*scale &&  -6*scale + scale/2 >= y && y >= -6*scale){
+        selectedColor = 0; return;
+    }
+    else if(-10*scale + scale/2 >= x && x >= -10*scale &&  -5*scale + scale/2 >= y && y >= -6*scale){
+        selectedColor = boundsColor; return;
+    }      
+    else if(-10*scale + scale/2 >= x && x >= -10*scale &&  -4*scale + scale/2 >= y && y >= -6*scale){
+        selectedColor = player1Color; return;
+    }
+    else if(-10*scale + scale/2 >= x && x >= -10*scale &&  -3*scale + scale/2 >= y && y >= -6*scale){
+        selectedColor = player2Color; return;
+    }
+    else if(-10*scale + scale/2 >= x && x >= -10*scale &&  -2*scale + scale/2 >= y && y >= -6*scale){
+        selectedColor = spikesColor; return;
+    }
+    else if(-10*scale + scale/2 >= x && x >= -10*scale &&  -1*scale + scale/2 >= y && y >= -6*scale){
+        selectedColor = deadlySpikesColor; return;
+    }
+    else if(-10*scale + scale/2 >= x && x >= -10*scale &&  0*scale + scale/2 >= y && y >= -6*scale){
+        selectedColor = boundsForP1Color; return;
+    }
+    else if(-10*scale + scale/2 >= x && x >= -10*scale &&  1*scale + scale/2 >= y && y >= -6*scale){
+        selectedColor = boundsForP2Color; return;
+    }
+    else if(-10*scale + scale/2 >= x && x >= -10*scale &&  2*scale + scale/2 >= y && y >= -6*scale){
+        selectedColor = wallsOnColor; return;
+    }
+    else if(-10*scale + scale/2 >= x && x >= -10*scale &&  3*scale + scale/2 >= y && y >= -6*scale){
+        selectedColor = wallsOffColor; return;
+    }
+    else if(-10*scale + scale/2 >= x && x >= -10*scale &&  4*scale + scale/2 >= y && y >= -6*scale){
+        selectedColor = wallSwitchColorIdle; return;
+    }
+    else if(-10*scale + scale/2 >= x && x >= -10*scale &&  5*scale + scale/2 >= y && y >= -6*scale){
+        selectedColor = boxesColor; return;
+    }
+    else if(-10*scale + scale/2 >= x && x >= -10*scale &&  6*scale + scale/2 >= y && y >= -6*scale){
+        selectedColor = endOfLevelColor; return;
+    }
+
+        if (x<0){x = x/scale -1;}
+        else {x = x/scale;}
+        
+        if (y<0){y = y/scale -1;}
+        else {y = y/scale;}
+
+        if (selectedColor == ofColor::black) {
+            if (find(coords.begin(), coords.end(), ofPoint(x, y)) != coords.end()){
+                for (int i = 0; i < coords.size(); i++) {
+
+                    if (coords[i] == ofPoint(x, y)) {
+                        coords.erase(i + coords.begin());
+                        colorsForCoords.erase(i+ colorsForCoords.begin());
+                        return;
+                        }
+                   }
+            return;       
+            
+            }
+        }
+
+
+
+        if (!(find(coords.begin(), coords.end(), ofPoint(x, y)) != coords.end())){
+        coords.push_back(ofPoint(x,y));
+        colorsForCoords.push_back(selectedColor);
+        }
+    }
 }
 
 //--------------------------------------------------------------
