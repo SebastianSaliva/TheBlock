@@ -7,6 +7,7 @@
 #include "ActivatorObject.h"
 #include <fstream>
 
+
 //--------------------------------------------------------------
 
 Level ofApp::makeLevel(vector<ofPoint> coords, vector<ofColor> colorsForCoords){
@@ -65,6 +66,18 @@ Level ofApp::makeLevel(vector<ofPoint> coords, vector<ofColor> colorsForCoords){
             else if (currentPixel == holdDownSpikesPadsOffColor){ 
                 levelInCreation.holdDownSpikesPads.push_back(new ActivatorObject(x*scale, y*scale, scale, scale));
             }
+            else if (currentPixel == upOnlyPassagesColor){ 
+                levelInCreation.upOnlyPassages.push_back(new Object(x*scale, y*scale, scale, scale));
+            }
+            else if (currentPixel == downOnlyPassagesColor){ 
+                levelInCreation.downOnlyPassages.push_back(new Object(x*scale, y*scale, scale, scale));
+            }
+            else if (currentPixel == leftOnlyPassagesColor){ 
+                levelInCreation.leftOnlyPassages.push_back(new Object(x*scale, y*scale, scale, scale));
+            }
+            else if (currentPixel == rightOnlyPassagesColor){ 
+                levelInCreation.rightOnlyPassages.push_back(new Object(x*scale, y*scale, scale, scale));
+            }
     }
     return levelInCreation;
 }
@@ -99,7 +112,7 @@ Level ofApp::makeLevel(string levelName){
 
         string line;
         ifstream myfile;
-        myfile.open(levelName);
+        myfile.open("bin/data/Levels/"+levelName);
         getline(myfile, line);       
         stringstream  ss(line);
         string str;
@@ -140,7 +153,7 @@ Level ofApp::makeLevel(string levelName){
     }
 
     ofImage levelpicture;
-    levelpicture.load(levelName);
+    levelpicture.load("Levels/"+levelName);
 
     Level levelInCreation;
 	ofPixels pixels = levelpicture.getPixels();    
@@ -196,6 +209,18 @@ Level ofApp::makeLevel(string levelName){
             }
             else if (currentPixel == holdDownSpikesPadsOnColor){ 
                 levelInCreation.holdDownSpikesPads.push_back(new ActivatorObject(x*scale, y*scale, scale, scale));
+            }
+            else if (currentPixel == upOnlyPassagesColor){ 
+                levelInCreation.upOnlyPassages.push_back(new Object(x*scale, y*scale, scale, scale));
+            }
+            else if (currentPixel == downOnlyPassagesColor){ 
+                levelInCreation.downOnlyPassages.push_back(new Object(x*scale, y*scale, scale, scale));
+            }
+            else if (currentPixel == leftOnlyPassagesColor){ 
+                levelInCreation.leftOnlyPassages.push_back(new Object(x*scale, y*scale, scale, scale));
+            }
+            else if (currentPixel == rightOnlyPassagesColor){ 
+                levelInCreation.rightOnlyPassages.push_back(new Object(x*scale, y*scale, scale, scale));
             }
         }}
     levelInCreation.spawn1 = levelInCreation.player1->pos;
@@ -253,7 +278,6 @@ void ofApp::saveLevelAsVectors(){
 }
 
 void ofApp::setup(){
-
     ofSetBackgroundColor(ofColor::black);
     currentLevel = makeLevel(levelNames[levelId]);
     currentLevel.isPlaying = true;
@@ -350,12 +374,20 @@ void ofApp::draw(){
         ofDrawRectangle(-11*scale, 6*scale, scale/2, scale/2);      
         ofSetColor(holdDownSpikesPadsOffColor);
         ofDrawRectangle(-11*scale, 7*scale, scale/2, scale/2); 
-
+        ofSetColor(upOnlyPassagesColor);
+        ofDrawRectangle(-12*scale, 4*scale, scale/2, scale/2);
+        ofSetColor(downOnlyPassagesColor);
+        ofDrawRectangle(-12*scale, 5*scale, scale/2, scale/2);
+        ofSetColor(leftOnlyPassagesColor);
+        ofDrawRectangle(-12*scale, 6*scale, scale/2, scale/2);      
+        ofSetColor(rightOnlyPassagesColor);
+        ofDrawRectangle(-12*scale, 7*scale, scale/2, scale/2);
         return;
     }
 
     if (currentLevel.isPlaying){
     currentLevel.draw();
+
     }
     else {
     ofSetBackgroundColor(ofColor::green);
@@ -468,9 +500,19 @@ if (building) {
     else if(-11*scale + scale/2 >= x && x >= -11*scale &&  7*scale + scale/2 >= y && y >= -6*scale){
         selectedColor = holdDownSpikesPadsOffColor; return;
     }
-    else if(-11*scale + scale/2 >= x && x >= -11*scale &&  8*scale + scale/2 >= y && y >= -6*scale){
-        selectedColor = ofColor(0); return;  
+    else if(-12*scale + scale/2 >= x && x >= -12*scale &&  4*scale + scale/2 >= y && y >= -6*scale){
+        selectedColor = upOnlyPassagesColor; return;
     }
+    else if(-12*scale + scale/2 >= x && x >= -12*scale &&  5*scale + scale/2 >= y && y >= -6*scale){
+        selectedColor = downOnlyPassagesColor; return;
+    }
+    else if(-12*scale + scale/2 >= x && x >= -12*scale &&  6*scale + scale/2 >= y && y >= -6*scale){
+        selectedColor = leftOnlyPassagesColor; return;
+    }
+    else if(-12*scale + scale/2 >= x && x >= -12*scale &&  7*scale + scale/2 >= y && y >= -6*scale){
+        selectedColor = rightOnlyPassagesColor; return;
+    }
+
 
         if (x<0){x = x/scale -1;}
         else {x = x/scale;}

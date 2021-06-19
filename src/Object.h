@@ -45,7 +45,10 @@ class Object{
             ofSetColor(color);
             ofDrawRectangle(pos, width, height);
             ofSetColor(ofColor::magenta);
-
+        }
+        void render(ofImage img){
+            ofSetColor(255);
+            img.draw(pos);
         }
         ofRectangle getBounds(){
             return ofRectangle(pos, width, height);

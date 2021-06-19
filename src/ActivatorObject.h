@@ -45,7 +45,10 @@ class ActivatorObject{
         };
 
         void render(){render(ofColor::white);}
-
+        void render(ofImage img){
+            ofSetColor(255);
+            img.draw(pos);
+        }
         void render(ofColor color){
             ofSetColor(color);
             ofDrawRectangle(pos, width, height);

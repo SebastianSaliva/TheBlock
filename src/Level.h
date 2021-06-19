@@ -15,20 +15,35 @@ Player* player2;
 ofPoint spawn1;
 ofPoint spawn2;
 
+ofImage player1pic;
+ofImage player2pic;
+
+
+ 
 vector <Object*> bounds;
+vector <Object*> upOnlyPassages;
+vector <Object*> downOnlyPassages;
+vector <Object*> leftOnlyPassages;
+vector <Object*> rightOnlyPassages;
+ofImage ArrowUpPic;
+ofImage ArrowDownPic;
+ofImage ArrowLeftPic;
+ofImage ArrowRightPic;
 vector <Object*> boundsForP1;
 vector <Object*> boundsForP2;
 
 vector <Object*> boxes;
 
-
 vector<Object*> spikes;
 vector<Object*> deadlySpikes;
+
+vector<ActivatorObject*> holdDownSpikesPads;
+vector<ActivatableObject*> holdDownSpikes;
 
 vector<ActivatorObject*> wallSwitches;
 vector<ActivatableObject*> walls;
 
-vector<ActivatorObject*> holdDownWallSwitches;
+vector<Object*> holdDownWallSwitches;
 vector<ActivatableObject*> holdDownWalls;
 
 vector<Object*> endOfLevel;
@@ -45,19 +60,19 @@ bool p2tryToMoveRight = false;
 bool isPlaying = false;
 int finished = 0;
 
-Level(){
 
+
+Level(){
+player1pic.load("blockImages/player1.png");
+player2pic.load("blockImages/player2.png");
+ArrowUpPic.load("blockImages/ArrowUp.png");
+ArrowDownPic.load("blockImages/ArrowDown.png");
+ArrowLeftPic.load("blockImages/ArrowLeft.png");
+ArrowRightPic.load("blockImages/ArrowRight.png");
 player1 = new Player(0, 0, 50);
 player2 = new Player(-50, -50, 50);
-
-};
-
-Level(vector<Object*> initialBounds, Player* player_1, Player* player_2){
-    player1 = player_1;
-    player2 = player_2;
-    bounds = initialBounds;
-    spawn1 = player1->pos;
-    spawn2 = player2->pos;
+spawn1 = player1->pos;
+spawn2 = player2->pos;
 };
 
 bool tryToMoveBox(int xMove, int yMove, Object*& box, Player* player){
@@ -115,14 +130,12 @@ bool tryToMoveBox(int xMove, int yMove, Object*& box, Player* player){
         return true;
 }
 
-
 void movePlayerHelper(int xMove, int yMove,  Player*& player){
 
         player->x += xMove;
         player->y += yMove;
         player->pos = ofPoint(player->x, player->y);
   
-
         for (Object* obj: bounds) {
             if (player->collides(obj->getBounds())){
                 player->x -= xMove;
@@ -131,7 +144,24 @@ void movePlayerHelper(int xMove, int yMove,  Player*& player){
                 return;
                 }
         }
-        
+        vector<vector<Object*>> passages;
+        if (xMove < 0) {passages = {upOnlyPassages, downOnlyPassages, rightOnlyPassages};}
+        else if (xMove > 0) {passages = {upOnlyPassages, downOnlyPassages, leftOnlyPassages};}
+        else if (yMove < 0) {passages = {leftOnlyPassages, downOnlyPassages, rightOnlyPassages};}
+        else {passages = {upOnlyPassages, leftOnlyPassages, rightOnlyPassages};}
+
+        for (vector<Object*> passage: passages){
+            for (Object* obj: passage) {
+                if (player->collides(obj->getBounds())){
+                    player->x -= xMove;
+                    player->y -= yMove;
+                    player->pos = ofPoint(player->x, player->y);
+                    return;
+                    }
+                }            
+        }
+
+
         Player* otherPlayer; vector<Object*> playerBounds;
         if (player == player1){otherPlayer = player2; playerBounds = boundsForP2;}
         else {otherPlayer = player1; playerBounds = boundsForP1;}
@@ -280,7 +310,6 @@ void keyReleased(int key){
 
     switch(key){
 
-
         case 'w':
             p1tryToMoveUp = false;
             break;
@@ -358,6 +387,25 @@ void update(){
         } 
         else {sw->framesSinceUsed--;}
     }//checks to see if wall switches can be turned on by either player
+
+
+    int heldCount = 0;
+    for (ActivatorObject* spikePad: holdDownSpikesPads){
+        spikePad->active = (player1->collides(spikePad->getBounds()) || player2->collides(spikePad->getBounds()));
+        if (spikePad->active) {heldCount++; continue;}
+        
+        for (Object* box: boxes) {
+            spikePad->active = (box->collides(spikePad->getBounds()));
+            if (spikePad->active) {heldCount++; break;}  
+        }
+    }
+    for (ActivatableObject* spike: holdDownSpikes) {spike->active = (!(heldCount == holdDownSpikesPads.size()));
+        if (spike->active){
+            if (player1->collides(spike->getBounds())){RespawnP1();}
+            if (player2->collides(spike->getBounds())){RespawnP2();}
+        }           
+    }
+
     movePlayer1();
     movePlayer2();
 }
@@ -374,22 +422,34 @@ void update(){
 		ofColor wallSwitchColorIdle = ofColor(10, 125, 100);
 		ofColor wallSwitchColorCanPress = ofColor(0, 255, 200);
         ofColor boxesColor = ofColor(75, 50, 25);
+        ofColor holdDownSpikesOnColor = ofColor(150, 50, 0);
+        ofColor holdDownSpikesOffColor = ofColor(50, 20, 0);
+        ofColor holdDownSpikesPadsOnColor = ofColor(150, 50, 100);
+        ofColor holdDownSpikesPadsOffColor = ofColor(175, 75, 125);
+
+        ofColor upOnlyPassagesColor = ofColor(250,250,0);
+        ofColor downOnlyPassagesColor = ofColor(200, 200, 0);
+        ofColor leftOnlyPassagesColor = ofColor(150, 150, 0);
+        ofColor rightOnlyPassagesColor = ofColor(100, 100, 0);
+
+
+
 
 void draw(){
     ofSetBackgroundColor(0);
 
     for (Object* end: endOfLevel) {end->render(endOfLevelColor);} //renders end of level
-
     for (Object* bound: bounds){bound->render();} //renders bounds
     for (Object* bound: boundsForP1){bound->render(boundsForP1Color);} //renders bounds for p1
     for (Object* bound: boundsForP2){bound->render(boundsForP2Color);} //renders bounds for p2
 
-
-
     bool eDrawn = false;
     bool iDrawn = false;
 
-    ofSetColor(ofColor::green);
+    ofSetColor(255); 
+
+
+
     for (ActivatorObject* sw: wallSwitches){
         if(!eDrawn && sw->p1canTurnOn){
             ofDrawBitmapString("press e to interact", -ofGetWidth()/2 + 2, 0); eDrawn = true;
@@ -407,17 +467,30 @@ void draw(){
         else {wall->render(wallsOffColor);}
     }
 
-   for (Object* spk: spikes) {spk->render(spikesColor);}
-   for (Object* spk: deadlySpikes) {spk->render(deadlySpikesColor);}
+    for (Object* spk: spikes) {spk->render(spikesColor);}
+    for (Object* spk: deadlySpikes) {spk->render(deadlySpikesColor);}
 
+    for (ActivatableObject* spike: holdDownSpikes) {
+        if (spike->active) {spike->render(holdDownSpikesOnColor);}
+        else {spike->render(holdDownSpikesOffColor);}
+    }
+
+    for (ActivatorObject* spikePad: holdDownSpikesPads){
+        if (spikePad->active) {spikePad->render(holdDownSpikesPadsOnColor);}
+        else {spikePad->render(holdDownSpikesPadsOffColor);}
+    }
     for (Object* box: boxes){box->render(boxesColor);}
 
+    for (Object* passage: upOnlyPassages){passage->render(ArrowUpPic);}
+    for (Object* passage: downOnlyPassages){passage->render(ArrowDownPic);}
+    for (Object* passage: leftOnlyPassages){passage->render(ArrowLeftPic);}
+    for (Object* passage: rightOnlyPassages){passage->render(ArrowRightPic);}
+    
+    ofSetColor(255);    
+    player1->render(player1pic);
+    player2->render(player2pic);
 
-
-   player1->render(player1Color);
-   player2->render(player2Color);
-
-   }
+    }
 
 
 

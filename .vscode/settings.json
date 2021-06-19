@@ -16,6 +16,7 @@
     },
     "terminal.explorerKind": "external",
     "files.associations": {
-        "cmath": "cpp"
+        "cmath": "cpp",
+        "iosfwd": "cpp"
     },
 }
